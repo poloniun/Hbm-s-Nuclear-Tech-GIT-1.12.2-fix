@@ -11,6 +11,7 @@ import com.hbm.packet.AuxGaugePacket;
 import com.hbm.packet.AuxLongPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbm.tileentity.machine.rbmk.RBMKDials;
 
 import api.hbm.energy.IEnergyUser;
 import net.minecraft.block.state.IBlockState;
@@ -64,7 +65,8 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 			long demand = maxPower * watts / 2000;
 
 			beam = 0;
-			
+			if(!RBMKDials.getDFCBABY(world))	
+			{			
 			if(joules > 0 || prev > 0) {
 
 				if(tank.getFluidAmount() >= 20) {
@@ -73,12 +75,12 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 					world.setBlockState(pos, Blocks.FLOWING_LAVA.getDefaultState());
 					return;
 				}
-			}
+			}}
 			
 			if(isOn) {
 				//i.e. 50,000,000 HE = 10,000 SPK
 				//1 SPK = 5,000HE
-				
+				if(!RBMKDials.getDFCBABY(world)){				
 				if(power >= demand) {
 					power -= demand;
 					long add = watts * 100;
@@ -87,6 +89,14 @@ public class TileEntityCoreEmitter extends TileEntityMachineBase implements ITic
 					else
 						joules += add;
 				}
+}
+				else{	
+					long add = watts * 100;
+					if(add > Long.MAX_VALUE-joules)
+						joules = Long.MAX_VALUE;
+					else
+					joules += add;
+					}
 				prev = joules;
 				
 				if(joules > 0) {

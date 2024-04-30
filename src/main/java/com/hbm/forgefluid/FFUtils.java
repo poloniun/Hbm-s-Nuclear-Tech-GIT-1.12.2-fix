@@ -225,6 +225,13 @@ public class FFUtils {
 			hasInfo = true;
 		}
 
+		if (FluidTypeHandler.PLASMA(fluid)) {
+			if(isKeyPressed){
+				texts.add("§4["+I18n.format("PLASMA")+"]");
+			}
+			hasInfo = true;
+		}
+
 		if (FluidTypeHandler.isCorrosivePlastic(fluid)) {
 			if (FluidTypeHandler.isCorrosiveIron(fluid)) {
 				if(isKeyPressed){

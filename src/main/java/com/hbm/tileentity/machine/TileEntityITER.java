@@ -21,9 +21,15 @@ import com.hbm.packet.FluidTypePacketTest;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbm.tileentity.machine.rbmk.RBMKDials;
 import com.hbm.saveddata.RadiationSavedData;
+import com.hbm.items.machine.ItemForgeFluidIdentifier;
+import com.hbm.forgefluid.FluidTypeHandler;
+import com.hbm.forgefluid.FluidTypeHandler.FluidTrait;
+
 
 import api.hbm.energy.IEnergyUser;
+import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,10 +50,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityITER extends TileEntityMachineBase implements ITickable, IEnergyUser, IFluidHandler, ITankPacketAcceptor {
+public class TileEntityITER extends TileEntityMachineBase implements ITickable, IEnergyGenerator, IEnergyUser, IFluidHandler, ITankPacketAcceptor {
 
 	public long power;
-	public static final long maxPower = 1000000000;
+	public static final long maxPower = 20000000000000L;
 	public static final int powerReq = 500000;
 	public int age = 0;
 	public FluidTank[] tanks;
@@ -56,7 +62,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	public Fluid plasmaType;
 	
 	public int progress;
-	public static final int duration = 100;
+	public int duration = 100;
 
 	@SideOnly(Side.CLIENT)
 	public int blanket;
@@ -73,7 +79,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 		types[0] = FluidRegistry.WATER;
 		tanks[1] = new FluidTank(1280000);
 		types[1] = ModForgeFluids.ultrahotsteam;
-		plasma = new FluidTank(16000);
+		plasma = new FluidTank(128000);
 	}
 
 	@Override
@@ -84,7 +90,7 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-
+		
 			age++;
 			if(age >= 20) {
 				age = 0;
@@ -94,14 +100,15 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 				fillFluidInit(tanks[1]);
 
 			this.updateConnections();
+						if(!RBMKDials.getGeneratorF(world))	
 			power = Library.chargeTEFromItems(inventory, 0, power, maxPower);
 
 			/// START Processing part ///
-
-			if(!isOn) {
+	
+			if(!isOn&&!RBMKDials.getGeneratorF(world)) {
 				plasma.setFluid(null); //jettison plasma if the thing is turned off
 			}
-
+			if(!RBMKDials.getGeneratorF(world)){	
 			//explode either if there's plasma that is too hot or if the reactor is turned on but the magnets have no power
 			if(plasma.getFluidAmount() > 0 && (this.plasmaType.getTemperature() >= this.getShield() || (this.isOn && this.power < powerReq))) {
 				this.disassemble();
@@ -151,7 +158,34 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 					}
 				}
 			}
-			doBreederStuff();
+			doBreederStuff();}
+			else{
+				duration = 8;
+				if(isOn ) {
+
+				if(plasma.getFluidAmount() > 0) {
+
+					int chance = FusionRecipes.getByproductChance(plasmaType)/15;
+
+					if(chance > 0 && world.rand.nextInt(chance) == 0)
+						produceByproduct();
+				}
+
+				int prod = FusionRecipes.getSteamProduction(plasmaType)*375000-500000;
+				
+					if(plasma.getFluidAmount() >= 300) {
+							power += prod;
+						plasma.drain(300, true);
+					}
+				doBreederStuff();
+				Generate();
+				power = Library.chargeItemsFromTE(inventory, 0, power, maxPower);
+				if(plasma.getFluidAmount() >= 300) power += 500000;
+				}
+			
+			}
+		
+				
 			/// END Processing part ///
 
 			/// START Notif packets ///
@@ -196,7 +230,10 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 		this.trySubscribe(world, pos.add(0, 3, 0), ForgeDirection.UP);
 		this.trySubscribe(world, pos.add(0, -3, 0), ForgeDirection.DOWN);
 	}
-	
+	private void Generate() {
+		this.sendPower(world, pos.add(0, 3, 0), ForgeDirection.UP);
+		this.sendPower(world, pos.add(0, -3, 0), ForgeDirection.DOWN);
+	}	
 	private void doBreederStuff() {
 
 		if(plasma.getFluidAmount() == 0) {
@@ -405,7 +442,10 @@ public class TileEntityITER extends TileEntityMachineBase implements ITickable, 
 				return tanks[0].fill(resource, doFill);
 			} else if(resource.getFluid() == types[1]) {
 				return tanks[1].fill(resource, doFill);
+			}else if(resource.getFluid() == plasmaType) {
+				return plasma.fill(resource, doFill);
 			}
+
 		}
 		return 0;
 	}

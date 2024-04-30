@@ -9,6 +9,7 @@ import com.hbm.interfaces.ITankPacketAcceptor;
 import com.hbm.lib.Library;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbm.tileentity.machine.rbmk.RBMKDials;
 
 import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.init.Blocks;
@@ -53,6 +54,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 
 			if(joules > 0) {
 
+				if(!RBMKDials.getDFCBABY(world)){	
 				if(tank.getFluidAmount() >= 20) {
 					tank.drain(20, true);
 				} else {
@@ -60,6 +62,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 					return;
 				}
 			}
+		}
 
 			syncJoules = joules;
 			

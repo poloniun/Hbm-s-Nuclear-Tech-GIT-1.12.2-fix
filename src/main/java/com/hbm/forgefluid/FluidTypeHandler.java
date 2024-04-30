@@ -56,6 +56,10 @@ public class FluidTypeHandler {
 		return containsTrait(f, FluidTrait.NO_ID);
 	}
 
+	public static boolean PLASMA(Fluid f){
+		return containsTrait(f, FluidTrait.PLASMA);
+	}
+
 	public static boolean noContainer(Fluid f){
 		return containsTrait(f, FluidTrait.NO_CONTAINER);
 	}
@@ -158,12 +162,12 @@ public class FluidTypeHandler {
 		fluidProperties.put(ModForgeFluids.gasoline.getName(), new FluidProperties(2, 0, 1, EnumSymbol.NONE));
 		fluidProperties.put(ModForgeFluids.experience.getName(), new FluidProperties(0, 0, 0, 1.1F, EnumSymbol.NONE));
 		
-		fluidProperties.put(ModForgeFluids.plasma_dt.getName(), new FluidProperties(0, 4, 0, EnumSymbol.RADIATION, FluidTrait.NO_CONTAINER, FluidTrait.NO_ID));
-		fluidProperties.put(ModForgeFluids.plasma_hd.getName(), new FluidProperties(0, 4, 0, EnumSymbol.RADIATION, FluidTrait.NO_CONTAINER, FluidTrait.NO_ID));
-		fluidProperties.put(ModForgeFluids.plasma_ht.getName(), new FluidProperties(0, 4, 0, EnumSymbol.RADIATION, FluidTrait.NO_CONTAINER, FluidTrait.NO_ID));
-		fluidProperties.put(ModForgeFluids.plasma_put.getName(), new FluidProperties(2, 3, 1, EnumSymbol.RADIATION, FluidTrait.NO_CONTAINER, FluidTrait.NO_ID));
-		fluidProperties.put(ModForgeFluids.plasma_xm.getName(), new FluidProperties(0, 4, 1, EnumSymbol.RADIATION, FluidTrait.NO_CONTAINER, FluidTrait.NO_ID));
-		fluidProperties.put(ModForgeFluids.plasma_bf.getName(), new FluidProperties(4, 5, 4, EnumSymbol.RADIATION, FluidTrait.NO_CONTAINER, FluidTrait.NO_ID));
+		fluidProperties.put(ModForgeFluids.plasma_dt.getName(), new FluidProperties(0, 4, 0, EnumSymbol.RADIATION, FluidTrait.PLASMA));
+		fluidProperties.put(ModForgeFluids.plasma_hd.getName(), new FluidProperties(0, 4, 0, EnumSymbol.RADIATION, FluidTrait.PLASMA));
+		fluidProperties.put(ModForgeFluids.plasma_ht.getName(), new FluidProperties(0, 4, 0, EnumSymbol.RADIATION, FluidTrait.PLASMA));
+		fluidProperties.put(ModForgeFluids.plasma_put.getName(), new FluidProperties(2, 3, 1, EnumSymbol.RADIATION, FluidTrait.PLASMA));
+		fluidProperties.put(ModForgeFluids.plasma_xm.getName(), new FluidProperties(0, 4, 1, EnumSymbol.RADIATION, FluidTrait.PLASMA));
+		fluidProperties.put(ModForgeFluids.plasma_bf.getName(), new FluidProperties(4, 5, 4, EnumSymbol.RADIATION, FluidTrait.PLASMA));
 		fluidProperties.put(ModForgeFluids.uu_matter.getName(),	new FluidProperties(6, 2, 6, 2.0F, EnumSymbol.ACID, FluidTrait.CORROSIVE));
 
 		fluidProperties.put(ModForgeFluids.toxic_fluid.getName(), new FluidProperties(3, 0, 4, EnumSymbol.RADIATION, FluidTrait.CORROSIVE_2));
@@ -203,6 +207,7 @@ public class FluidTypeHandler {
 		CORROSIVE,
 		CORROSIVE_2,
 		NO_CONTAINER,
+		PLASMA,
 		NO_ID;
 	}
 }

@@ -26,6 +26,16 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	public static final String KEY_REASIM_MOD = "dialReasimOutputMod";
 	public static final String KEY_REASIM_BOILERS = "dialReasimBoilers";
 	public static final String KEY_REASIM_BOILER_SPEED = "dialReasimBoilerSpeed";
+	public static final String KEY_DISABLE_MELTDOWNS = "dialDisableMeltdowns";
+	public static final String KEY_UNIQUE_ROD = "dialUniqueRod";
+	public static final String KEY_REASIM_COOLANT_BOILERS = "dialReasimCoolantBoilers";
+	public static final String KEY_GENERATOR_AMODE = "dialGeneratorAMode";
+	public static final String KEY_GENERATOR_BMODE = "dialGeneratorBMode";
+	public static final String KEY_GENERATOR_CMODE = "dialGeneratorCMode";
+	public static final String KEY_GENERATOR_DMODE = "dialGeneratorDMode";
+	public static final String KEY_GENERATOR_EMODE = "dialGeneratorEMode";
+	public static final String KEY_GENERATOR_FMODE = "dialGeneratorFMode";
+	public static final String KEY_DFC_BABY_MODE = "dialDFCBabyMode";	
 	
 	public static void createDials(World world) {
 		GameRules rules = world.getGameRules();
@@ -49,6 +59,16 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 			rules.setOrCreateGameRule(KEY_REASIM_MOD, "1.0");
 			rules.setOrCreateGameRule(KEY_REASIM_BOILERS, "false");
 			rules.setOrCreateGameRule(KEY_REASIM_BOILER_SPEED, "0.05");
+			rules.setOrCreateGameRule(KEY_UNIQUE_ROD, "true");
+			rules.setOrCreateGameRule(KEY_DISABLE_MELTDOWNS, "true");
+			rules.setOrCreateGameRule(KEY_REASIM_COOLANT_BOILERS, "false");
+			rules.setOrCreateGameRule(KEY_GENERATOR_AMODE, "true");//RBMK
+			rules.setOrCreateGameRule(KEY_GENERATOR_BMODE, "true");//NORMALREACT
+			rules.setOrCreateGameRule(KEY_GENERATOR_CMODE, "true");//
+			rules.setOrCreateGameRule(KEY_GENERATOR_DMODE, "true");//
+			rules.setOrCreateGameRule(KEY_GENERATOR_EMODE, "true");//WATZ
+			rules.setOrCreateGameRule(KEY_GENERATOR_FMODE, "true");//FUSION
+			rules.setOrCreateGameRule(KEY_DFC_BABY_MODE, "true");
 		}
 	}
 	
@@ -203,6 +223,58 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 */
 	public static double getReaSimBoilerSpeed(World world) {
 		return MathHelper.clamp(shittyWorkaroundParseDouble(world.getGameRules().getString(KEY_REASIM_BOILER_SPEED), 0.05D), 0.0D, 1.0D);
+	}
+	/**
+	 * Whether or not fuel columns should initiate a meltdown when overheating
+	 * The method is in reverse because the default for older worlds will be 'false'
+	 * @param world
+	 * @return
+	 */
+	public static boolean getMeltdownsDisabled(World world) {
+		return world.getGameRules().getBoolean(KEY_DISABLE_MELTDOWNS);
+	}
+
+
+	public static boolean getRodUnique(World world) {
+		return world.getGameRules().getBoolean(KEY_UNIQUE_ROD);
+	}
+
+	/**
+	 * Whether or not all components should act like boilers with dedicated in/outlet blocks
+	 * @param world
+	 * @return
+	 */
+	public static boolean getReasimCoolantBoilers(World world) {
+		return world.getGameRules().getBoolean(KEY_REASIM_COOLANT_BOILERS) ;
+	}
+
+	public static boolean getGeneratorA(World world) {
+		return world.getGameRules().getBoolean(KEY_GENERATOR_AMODE) ;
+	}
+
+	public static boolean getGeneratorB(World world) {
+		return world.getGameRules().getBoolean(KEY_GENERATOR_BMODE) ;
+	}
+
+	public static boolean getGeneratorC(World world) {
+		return world.getGameRules().getBoolean(KEY_GENERATOR_CMODE) ;
+	}
+
+	public static boolean getGeneratorD(World world) {
+		return world.getGameRules().getBoolean(KEY_GENERATOR_DMODE) ;
+	}	
+
+
+	public static boolean getGeneratorE(World world) {
+		return world.getGameRules().getBoolean(KEY_GENERATOR_EMODE) ;
+	}
+
+	public static boolean getGeneratorF(World world) {
+		return world.getGameRules().getBoolean(KEY_GENERATOR_EMODE) ;
+	}
+
+	public static boolean getDFCBABY(World world) {
+		return world.getGameRules().getBoolean(KEY_DFC_BABY_MODE) ;
 	}
 	
 	//why make the double representation accessible in a game rule when you can just force me to add a second pointless parsing operation?

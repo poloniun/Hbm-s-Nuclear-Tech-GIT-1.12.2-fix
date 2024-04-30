@@ -15,6 +15,7 @@ import com.hbm.lib.Library;
 import com.hbm.lib.ModDamageSource;
 import com.hbm.main.AdvancementManager;
 import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbm.tileentity.machine.rbmk.RBMKDials;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +56,7 @@ public class TileEntityCore extends TileEntityMachineBase implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote) {
+			if(!RBMKDials.getDFCBABY(world)){
 			if(heat > 0 && heat >= field) {
 				if(safeTimer > 20){
 					int fill = tanks[0].getFluidAmount() + tanks[1].getFluidAmount();
@@ -90,7 +92,7 @@ public class TileEntityCore extends TileEntityMachineBase implements ITickable {
 		    	safeTimer++;
 			} else {
 				if(safeTimer > 0) safeTimer--;
-			}
+			}}
 			
 			if(inventory.getStackInSlot(0).getItem() instanceof ItemCatalyst && inventory.getStackInSlot(2).getItem() instanceof ItemCatalyst){
 				color = calcAvgHex(
@@ -102,8 +104,8 @@ public class TileEntityCore extends TileEntityMachineBase implements ITickable {
 				color = 0;
 				hasCore = false;
 			}
-			
-			if(heat > 0){
+			if(!RBMKDials.getDFCBABY(world)){			
+			if(heat > 0)
 				radiation();
 			}
 			
@@ -224,16 +226,17 @@ public class TileEntityCore extends TileEntityMachineBase implements ITickable {
 		demand = (int)(getCoreFuel() * demand * fuelMod);
 		
 		//check if the reaction has enough valid fuel
+		if(!RBMKDials.getDFCBABY(world)){	
 		if(tanks[0].getFluidAmount() < demand || tanks[1].getFluidAmount() < demand)
 			return joules;
-		
+		tanks[0].drain(demand, true);
+		tanks[1].drain(demand, true);}		
 		heat += (int)(getCoreHeat() * heatMod * Math.ceil((double)joules / 10000D));
 		
 		Fluid f1 = tanks[0].getFluid().getFluid();
 		Fluid f2 = tanks[1].getFluid().getFluid();
 
-		tanks[0].drain(demand, true);
-		tanks[1].drain(demand, true);
+
 
 		long powerOutput = (long) Math.max(0, (powerMod * joules * getCorePower() * FluidTypeHandler.getDFCEfficiency(f1) * FluidTypeHandler.getDFCEfficiency(f2)) + powerAbs);
 		if(powerOutput > 0 && heat == 0)

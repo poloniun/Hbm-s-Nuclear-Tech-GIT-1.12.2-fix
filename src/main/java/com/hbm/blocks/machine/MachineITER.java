@@ -10,6 +10,12 @@ import com.hbm.render.amlfrom1710.Vec3;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityITER;
 import com.hbm.tileentity.machine.TileEntityITERStruct;
+import com.hbm.items.ModItems;
+import com.hbm.items.machine.ItemForgeFluidIdentifier;
+import com.hbm.forgefluid.FFUtils;
+import com.hbm.forgefluid.FluidTypeHandler;
+import com.hbm.forgefluid.FluidTypeHandler.FluidTrait;
+import com.hbm.forgefluid.ModForgeFluids;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -26,7 +32,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
-
+import net.minecraftforge.fluids.Fluid;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 public class MachineITER extends BlockDummyable {
 
 	public static boolean drop = true;
@@ -63,8 +75,19 @@ public class MachineITER extends BlockDummyable {
 				return false;
 
 			TileEntityITER entity = (TileEntityITER) world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+
 			if(entity != null)
 			{
+			if(player.getHeldItem(hand).getItem() == ModItems.forge_fluid_identifier) {
+			Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
+
+			if(FluidTypeHandler.PLASMA(type) ){
+			player.sendMessage(new TextComponentTranslation("chat.iter.changedto", type.getLocalizedName(new FluidStack(type, 1))));
+				entity.plasmaType = type;
+				entity.markDirty();
+}
+}
+
 				FMLNetworkHandler.openGui(player, MainRegistry.instance, ModBlocks.guiID_iter, world, pos[0], pos[1], pos[2]);
 			}
 			return true;
