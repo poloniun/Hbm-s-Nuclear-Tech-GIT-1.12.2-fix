@@ -2,6 +2,7 @@ package com.hbm.tileentity.machine;
 
 import java.util.List;
 
+import com.hbm.lib.ForgeDirection;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachineReactor;
 import com.hbm.config.MobConfig;
@@ -44,13 +45,18 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import com.hbm.tileentity.machine.rbmk.RBMKDials;
+import api.hbm.energy.IEnergyGenerator;
 
-public class TileEntityMachineReactorSmall extends TileEntity implements ITickable, IFluidHandler, ITankPacketAcceptor {
+public class TileEntityMachineReactorSmall extends TileEntity implements ITickable,IEnergyGenerator, IFluidHandler, ITankPacketAcceptor {
 
 	// 4 blocks when extended + 5 pixels tall
 	private static final AxisAlignedBB SMALL_REACTOR_BB = new AxisAlignedBB(0, 0, 0, 1, 5, 1);
 
 	public ItemStackHandler inventory;
+
+	public long power;
+	public static final long maxPower = 1000000000000L;
 
 	public int hullHeat;
 	public static final int maxHullHeat = 100000;
@@ -232,13 +238,20 @@ public class TileEntityMachineReactorSmall extends TileEntity implements ITickab
 					this.world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), HBMSoundHandler.reactorStop, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
-			if(rods >= rodsMax)
+			if(rods >= rodsMax && (!RBMKDials.getGeneratorB(world)))
 				
 				for(int i = 0; i < 12; i++) {
 					if(inventory.getStackInSlot(i).getItem() instanceof ItemFuelRod)
 						decay(i);
 				}
-
+			if(rods >= rodsMax && RBMKDials.getGeneratorB(world)){
+				
+				for(int i = 0; i < 12; i++) {
+					if(inventory.getStackInSlot(i).getItem() instanceof ItemFuelRod)
+						decayPower(i);
+				}
+				transPower();
+				}
 			coreHeatMod = 1.0;
 			hullHeatMod = 1.0;
 			conversionMod = 1.0;
@@ -481,6 +494,26 @@ public class TileEntityMachineReactorSmall extends TileEntity implements ITickab
 		}
 	}
 
+	private void decayPower(int id) {
+		if(id > 11)
+			return;
+
+		int decay = getNeightbourCount(id) + 1;
+
+		decay *= decayMod;
+
+		for(int i = 0; i < decay; i++) {
+			ItemFuelRod rod = ((ItemFuelRod) inventory.getStackInSlot(id).getItem());
+			this.power += rod.getHeatPerTick() * coreHeatMod * 10;
+			ItemFuelRod.setLifetime(inventory.getStackInSlot(id), ItemFuelRod.getLifeTime(inventory.getStackInSlot(id)) + 10);
+
+			if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(id)) > ((ItemFuelRod) inventory.getStackInSlot(id).getItem()).getMaxLifeTime()) {
+				onRunOut(id);
+				return;
+			}
+		}
+	}
+	
 	private void onRunOut(int id) {
 
 		// System.out.println("aaa");
@@ -717,6 +750,19 @@ public class TileEntityMachineReactorSmall extends TileEntity implements ITickab
 		needsUpdate = FFUtils.fillFluid(this, tank, world, pos.add(0, 2, 1), 4000) || needsUpdate;
 	}
 
+	public void transPower() {
+		this.sendPower(world, new BlockPos(pos.getX()-1, pos.getY(), pos.getZ()),ForgeDirection.WEST);
+		this.sendPower(world, new BlockPos(pos.getX()+1, pos.getY(), pos.getZ()),ForgeDirection.EAST);
+		this.sendPower(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ()+1),ForgeDirection.SOUTH);
+		this.sendPower(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ()-1),ForgeDirection.NORTH);
+		this.sendPower(world, new BlockPos(pos.getX(), pos.getY()-1, pos.getZ()),ForgeDirection.DOWN);
+		this.sendPower(world, new BlockPos(pos.getX()-1, pos.getY()+2, pos.getZ()),ForgeDirection.WEST);
+		this.sendPower(world, new BlockPos(pos.getX()+1, pos.getY()+2, pos.getZ()),ForgeDirection.EAST);
+		this.sendPower(world, new BlockPos(pos.getX(), pos.getY()+2, pos.getZ()+1),ForgeDirection.SOUTH);
+		this.sendPower(world, new BlockPos(pos.getX(), pos.getY()+2, pos.getZ()-1),ForgeDirection.NORTH);
+		this.sendPower(world, new BlockPos(pos.getX(), pos.getY()+3, pos.getZ()),ForgeDirection.UP);
+	}
+
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
 		return new IFluidTankProperties[] { tanks[0].getTankProperties()[0], tanks[1].getTankProperties()[0], tanks[2].getTankProperties()[0] };
@@ -851,5 +897,21 @@ public class TileEntityMachineReactorSmall extends TileEntity implements ITickab
 		world.getBlockState(pos.add(1, 1, 0)).getMaterial() == Material.WATER || //East
 		world.getBlockState(pos.add(-1, 1, 0)).getMaterial() == Material.WATER;//West
 	}
+	public boolean isLoaded(){ return true;}
 
+	@Override
+	public void setPower(long i) {
+		this.power = i;
+	}
+
+	@Override
+	public long getPower() {
+		return power;
+	}
+
+	@Override
+	public long getMaxPower() {
+		return maxPower;
+	}
 }
+

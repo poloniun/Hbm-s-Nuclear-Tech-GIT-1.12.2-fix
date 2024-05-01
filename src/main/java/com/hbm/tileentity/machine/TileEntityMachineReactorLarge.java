@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.hbm.lib.ForgeDirection;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.MobConfig;
 import com.hbm.explosion.ExplosionNukeGeneric;
@@ -47,11 +48,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
+import com.hbm.tileentity.machine.rbmk.RBMKDials;
+import api.hbm.energy.IEnergyUser;
+import api.hbm.energy.IEnergyGenerator;
 
-public class TileEntityMachineReactorLarge extends TileEntity implements ITickable, IFluidHandler, ITankPacketAcceptor {
+public class TileEntityMachineReactorLarge extends TileEntity implements ITickable,IEnergyGenerator, IFluidHandler, ITankPacketAcceptor {//  IEnergyUser,
 
 	public ItemStackHandler inventory;
 	public ICapabilityProvider dropProvider;
+
+	public long power;
+	public static final long maxPower = 1000000000000L;
 
 	public int hullHeat;
 	public final int maxHullHeat = 100000;
@@ -401,6 +408,28 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		if(consumption > 0 || heat > 0)
 			markDirty();
 	}
+
+	 private void Generate() {
+		
+		int consumption = (maxFuel / cycleDuration) * rods / 10;
+		
+		if(consumption > fuel)
+			consumption = fuel;
+		
+		if(consumption + waste > maxWaste)
+			consumption = maxWaste - waste;
+		
+		fuel -= consumption;
+		waste += consumption;
+		
+		int heat = (consumption / size) * type.heat / fuelMult;
+		
+		this.power += heat;
+		
+		if(consumption > 0 || heat > 0)
+			markDirty();
+	}	
+	
 	
 	@Override
 	public void update() {
@@ -507,9 +536,14 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 				
 			}
 				
-			if(rods > 0)
+			if(rods > 0){
+			if(!RBMKDials.getGeneratorB(world))
 				generate();
-
+			else {
+			Generate();
+			 transpower();
+				}
+			}
 			if (this.coreHeat > 0 && this.tanks[1].getFluidAmount() > 0 && this.hullHeat < this.maxHullHeat) {
 				this.hullHeat += this.coreHeat * 0.175;
 				this.coreHeat -= this.coreHeat * 0.1;
@@ -824,6 +858,27 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		FFUtils.fillFluid(this, tank, world, new BlockPos(pos.getX(), pos.getY() - depth - 1, pos.getZ()), 2560000);
 	}
 
+	public void transpower() {
+		MutableBlockPos mPos = new BlockPos.MutableBlockPos();
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+		if(world.getBlockState(mPos.setPos(x - 2, y, z)).getBlock() == ModBlocks.reactor_hatch)
+			this.sendPower(world, new BlockPos(pos.getX() - 3, pos.getY(), pos.getZ()),ForgeDirection.WEST);
+		
+		if(world.getBlockState(mPos.setPos(x + 2, y, z)).getBlock() == ModBlocks.reactor_hatch)
+			this.sendPower(world, new BlockPos(pos.getX() + 3, pos.getY(), pos.getZ()), ForgeDirection.EAST);
+		
+		if(world.getBlockState(mPos.setPos(x, y, z - 2)).getBlock() == ModBlocks.reactor_hatch)
+			this.sendPower(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 3), ForgeDirection.NORTH);
+		
+		if(world.getBlockState(mPos.setPos(x, y, z + 2)).getBlock() == ModBlocks.reactor_hatch)
+			this.sendPower(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 3), ForgeDirection.SOUTH);
+
+		this.sendPower(world, new BlockPos(pos.getX(), pos.getY() + height + 1, pos.getZ()), ForgeDirection.UP);
+		this.sendPower(world,  new BlockPos(pos.getX(), pos.getY() - depth - 1, pos.getZ()),ForgeDirection.DOWN);
+	}
+
 	@Override
 	public IFluidTankProperties[] getTankProperties() {
 		return new IFluidTankProperties[]{tanks[0].getTankProperties()[0], tanks[1].getTankProperties()[0], tanks[2].getTankProperties()[0]};
@@ -1005,5 +1060,20 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			
 		return 0;
 	}
+	public boolean isLoaded(){ return true;}
 
+	@Override
+	public void setPower(long i) {
+		this.power = i;
+	}
+
+	@Override
+	public long getPower() {
+		return power;
+	}
+
+	@Override
+	public long getMaxPower() {
+		return maxPower;
+	}
 }

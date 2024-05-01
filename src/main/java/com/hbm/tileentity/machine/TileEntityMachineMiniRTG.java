@@ -20,9 +20,9 @@ public class TileEntityMachineMiniRTG extends TileEntityLoadedBase implements IT
 		if(!world.isRemote) {
 			this.sendPower(world, pos);
 			if(this.getBlockType() == ModBlocks.machine_powerrtg)
-				power += 2500;
+				power += 50000;
 			else
-				power += 70;
+				power += 8000;
 
 			if(power > getMaxPower())
 				power = getMaxPower();
@@ -42,8 +42,8 @@ public class TileEntityMachineMiniRTG extends TileEntityLoadedBase implements IT
 	@Override
 	public long getMaxPower() {
 		if(this.getBlockType() == ModBlocks.machine_powerrtg)
-			return 50000;
+			return 2000000;
 
-		return 10000;
+		return 400000;
 	}
 }
