@@ -45,7 +45,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 			rules.setOrCreateGameRule(KEY_COLUMN_HEAT_FLOW, "0.2");
 			rules.setOrCreateGameRule(KEY_FUEL_DIFFUSION_MOD, "1.0");
 			rules.setOrCreateGameRule(KEY_HEAT_PROVISION, "0.2");
-			rules.setOrCreateGameRule(KEY_COLUMN_HEIGHT, "4");
+			rules.setOrCreateGameRule(KEY_COLUMN_HEIGHT, "2");
 			rules.setOrCreateGameRule(KEY_PERMANENT_SCRAP, "true");
 			rules.setOrCreateGameRule(KEY_BOILER_HEAT_CONSUMPTION, "0.1");
 			rules.setOrCreateGameRule(KEY_CONTROL_SPEED_MOD, "1.0");
@@ -53,7 +53,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 			rules.setOrCreateGameRule(KEY_SAVE_DIALS, "true");
 			rules.setOrCreateGameRule(KEY_OUTGASSER_MOD, "1.0");
 			rules.setOrCreateGameRule(KEY_SURGE_MOD, "1.0");
-			rules.setOrCreateGameRule(KEY_FLUX_RANGE, "5");
+			rules.setOrCreateGameRule(KEY_FLUX_RANGE, "10");
 			rules.setOrCreateGameRule(KEY_REASIM_RANGE, "10");
 			rules.setOrCreateGameRule(KEY_REASIM_COUNT, "6");
 			rules.setOrCreateGameRule(KEY_REASIM_MOD, "1.0");
@@ -66,7 +66,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 			rules.setOrCreateGameRule(KEY_GENERATOR_BMODE, "true");//NORMALREACT
 			rules.setOrCreateGameRule(KEY_GENERATOR_CMODE, "true");//
 			rules.setOrCreateGameRule(KEY_GENERATOR_DMODE, "true");//
-			rules.setOrCreateGameRule(KEY_GENERATOR_EMODE, "true");//WATZ
+			rules.setOrCreateGameRule(KEY_GENERATOR_EMODE, "true");//
 			rules.setOrCreateGameRule(KEY_GENERATOR_FMODE, "true");//FUSION
 			rules.setOrCreateGameRule(KEY_DFC_BABY_MODE, "true");
 		}

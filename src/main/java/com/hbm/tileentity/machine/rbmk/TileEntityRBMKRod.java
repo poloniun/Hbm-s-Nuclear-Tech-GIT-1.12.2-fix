@@ -19,6 +19,7 @@ import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
 import com.hbm.tileentity.machine.rbmk.IRBMKLoadable;
 
 import net.minecraft.util.EnumFacing;
+import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -29,7 +30,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBMKFluxReceiver, IRBMKLoadable {
+public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IEnergyGenerator, IRBMKFluxReceiver, IRBMKLoadable {
 	
 	//amount of "neutron energy" buffered for the next tick to use for the reaction
 	public double fluxFast;
@@ -37,7 +38,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	public boolean hasRod;
 
 	public double fluxOut = 0;
-
+	public long power;
 	public float fuelR;
 	public float fuelG;
 	public float fuelB;
@@ -84,14 +85,20 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 				this.cherenkovG = rod.cherenkovG;
 				this.cherenkovB = rod.cherenkovB;
 				
-				double fluxIn = fluxFromType(rod.nType);
+				double fluxIn;
+				if(RBMKDials.getRodUnique(world) && rod.selfRate == 0)	
+					fluxIn = fluxFromType(rod.nType) + 50.0D;
+				else 
+					fluxIn = fluxFromType(rod.nType);
 				fluxOut = rod.burn(world, inventory.getStackInSlot(0), fluxIn);
 				NType rType = rod.rType;
 				
 				rod.updateHeat(world, inventory.getStackInSlot(0), 1.0D);
 				this.heat += rod.provideHeat(world, inventory.getStackInSlot(0), heat, 1.0D);
+				if(RBMKDials.getGeneratorA(world)&&this.heat>20D)
+					Generate();	
 				
-				
+				if(!RBMKDials.getGeneratorA(world))		{	
 				if(!this.hasLid()) {
 					RadiationSavedData.incrementRad(world, pos, (float) ((this.fluxFast + this.fluxSlow) * 0.05F), (float) ((this.fluxFast + this.fluxSlow) * 10F));
 				} else{
@@ -100,15 +107,19 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 						RadiationSavedData.incrementRad(world, pos, (float) ((this.fluxFast + this.fluxSlow) * 0.05F * meltdownPercent * 0.01D), (float) ((this.fluxFast + this.fluxSlow) * meltdownPercent * 0.1D));
 					}
 				}
-				
+			}
 				super.update();
 				//for spreading, we want the buffered flux to be 0 because we want to know exactly how much gets reflected back
 				this.fluxFast = 0;
 				this.fluxSlow = 0;
 
 				if(this.heat > this.maxHeat()) {
+
+					if(!RBMKDials.getMeltdownsDisabled(world) && (!RBMKDials.getGeneratorA(world))) 
+				{
 					this.meltdown();
 					return;
+				}
 				}
 				
 				if(fluxOut > 0){
@@ -185,6 +196,18 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	protected double runInteraction(int x, int y, int z, double flux) {
 		
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		if(RBMKDials.getRodUnique(world)) {
+			ItemRBMKRod fuel = ((ItemRBMKRod)inventory.getStackInSlot(0).getItem());
+			if( fuel.function.name()!="CONSTANT")
+				this.receiveFlux(this.isModerated() ? NType.SLOW : stream, flux * 1.08D);
+			else if (fuel.getYield(inventory.getStackInSlot(0)) > 0)
+				this.fluxSlow = fuel.selfRate ;
+			if(te instanceof TileEntityRBMKOutgasser) {
+				TileEntityRBMKOutgasser rod = (TileEntityRBMKOutgasser)te;
+				rod.receiveFlux(NType.SLOW, flux);
+			}
+			return 0;
+		}
 		
 		if(te instanceof TileEntityRBMKBase) {
 			TileEntityRBMKBase base = (TileEntityRBMKBase) te;
@@ -204,6 +227,8 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 			if(rod.inventory.getStackInSlot(0).getItem() instanceof ItemRBMKRod) {
 				rod.receiveFlux(stream, flux);
 				return 0;
+			}else {
+				return flux;
 			}
 		}
 		if(te instanceof IRBMKFluxReceiver) {
@@ -434,4 +459,59 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 
 		return data;
 	}
+
+	/**
+	 * The Generator consume all heats to generatting
+	 */
+	private void Generate() {
+		this.power =( new Double(this.heat).longValue()) * 1800-36000;
+			this.sendPower(world, new BlockPos(pos.getX(), pos.getY()-1, pos.getZ()), ForgeDirection.DOWN);
+			for(int i = 0; i<3;i++){
+			for(int j = 1; j<3; j++){
+			this.sendPower(world, new BlockPos(pos.getX() +  i , pos.getY(), pos.getZ()  +  j) , ForgeDirection.EAST);
+			this.sendPower(world, new BlockPos(pos.getX() +  i , pos.getY(), pos.getZ()  +  j) , ForgeDirection.SOUTH);
 }
+}
+			for(int i = 1; i<3;i++){
+			for(int j = 0; j<3; j++){
+			this.sendPower(world, new BlockPos(pos.getX() +  i , pos.getY(), pos.getZ()  -  j) , ForgeDirection.EAST);
+			this.sendPower(world, new BlockPos(pos.getX() +  i , pos.getY(), pos.getZ()  -  j) , ForgeDirection.NORTH);
+}
+}
+			for(int i = 0; i<3;i++){
+			for(int j = 1; j<3; j++){
+			this.sendPower(world, new BlockPos(pos.getX() -  i , pos.getY(), pos.getZ() -  j) , ForgeDirection.WEST);
+			this.sendPower(world, new BlockPos(pos.getX() -  i , pos.getY(), pos.getZ() -  j) , ForgeDirection.NORTH);
+}
+}
+			for(int i = 1; i<3;i++){
+			for(int j = 0; j<3; j++){
+			this.sendPower(world, new BlockPos(pos.getX() -  i , pos.getY(), pos.getZ() +  j) , ForgeDirection.WEST);
+			this.sendPower(world, new BlockPos(pos.getX() -  i , pos.getY(), pos.getZ() +  j) , ForgeDirection.SOUTH);
+}
+}
+
+//}
+		this.heat = 0;
+
+	}
+
+
+	public boolean isLoaded(){ return true;}
+
+	@Override
+	public void setPower(long i) {
+		this.power = i;
+	}
+
+	@Override
+	public long getPower() {
+		return power;
+	}
+
+	@Override
+	public long getMaxPower() {
+		return power;
+	}
+}
+

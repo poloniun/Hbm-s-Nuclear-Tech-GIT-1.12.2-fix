@@ -66,9 +66,9 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 	public static final byte gravity = 5; //in blocks per s^2
 	
 	public int water;
-	public static final int maxWater = 16000*20;
+	public static final int maxWater = 1000000;
 	public int steam;
-	public static final int maxSteam = 16000*20;
+	public static final int maxSteam = 1000000;
 	
 
 	public boolean hasLid() {
@@ -113,9 +113,13 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 	public void update() {
 		
 		if(!world.isRemote) {
+			if 	(!RBMKDials.getReasimCoolantBoilers(world))
 			moveHeat();
 			if(RBMKDials.getReasimBoilers(world)) 
 				boilWater();
+			if 	(RBMKDials.getReasimCoolantBoilers(world)&&!RBMKDials.getReasimBoilers(world)) 
+				boilCoolant();
+			
 			coolPassively();
 			jump();
 			
@@ -178,6 +182,22 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 		this.water -= processedWater;
 		this.steam += processedWater;
 		this.heat -= processedWater * heatConsumption;
+	}
+	private void boilCoolant() {
+		
+		if(heat <= 500D)
+			return;
+		
+		//double heatConsumption = RBMKDials.getBoilerHeatConsumption(world);
+		double availableHeat = (this.heat - 20D) / 500D;
+		double availableWater = this.water;
+		double availableSpace = TileEntityRBMKBase.maxSteam - this.steam;
+		
+		int processedWater = (int)Math.floor(Math.min(availableHeat, Math.min(availableWater, availableSpace)));
+		
+		this.water -= processedWater;
+		this.steam += processedWater;
+		this.heat -= processedWater *500;
 	}
 	
 	public static final ForgeDirection[] heatDirs = new ForgeDirection[] {

@@ -411,7 +411,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 
 	 private void Generate() {
 		
-		int consumption = (maxFuel / cycleDuration) * rods / 10;
+		int consumption = (maxFuel / cycleDuration) * rods / 4;
 		
 		if(consumption > fuel)
 			consumption = fuel;

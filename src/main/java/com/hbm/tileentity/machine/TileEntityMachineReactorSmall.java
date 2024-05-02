@@ -504,8 +504,8 @@ public class TileEntityMachineReactorSmall extends TileEntity implements ITickab
 
 		for(int i = 0; i < decay; i++) {
 			ItemFuelRod rod = ((ItemFuelRod) inventory.getStackInSlot(id).getItem());
-			this.power += rod.getHeatPerTick() * coreHeatMod * 10;
-			ItemFuelRod.setLifetime(inventory.getStackInSlot(id), ItemFuelRod.getLifeTime(inventory.getStackInSlot(id)) + 10);
+			this.power += rod.getHeatPerTick() * coreHeatMod * 20;
+			ItemFuelRod.setLifetime(inventory.getStackInSlot(id), ItemFuelRod.getLifeTime(inventory.getStackInSlot(id)) + 20);
 
 			if(ItemFuelRod.getLifeTime(inventory.getStackInSlot(id)) > ((ItemFuelRod) inventory.getStackInSlot(id).getItem()).getMaxLifeTime()) {
 				onRunOut(id);

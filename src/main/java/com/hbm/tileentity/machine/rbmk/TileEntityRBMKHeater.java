@@ -50,9 +50,9 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 		tanks = new FluidTank[2];
 		tankTypes = new Fluid[2];
 
-		tanks[0] = new FluidTank(ModForgeFluids.coolant, 0, 16000);
+		tanks[0] = new FluidTank(ModForgeFluids.coolant, 0, 1000000);
 		tankTypes[0] = ModForgeFluids.coolant;
-		tanks[1] = new FluidTank(ModForgeFluids.hotcoolant, 0, 16000);
+		tanks[1] = new FluidTank(ModForgeFluids.hotcoolant, 0, 1000000);
 		tankTypes[1] = ModForgeFluids.hotcoolant;
 	}
 
