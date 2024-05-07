@@ -41,6 +41,10 @@ public class MachineRecipes {
 			return new Object[] { ModForgeFluids.hotsteam, 50, 5, 150 };
 		} else if(type == ModForgeFluids.ultrahotsteam){
 			return new Object[] { ModForgeFluids.superhotsteam, 50, 5, 250 };
+		}else if(type == ModForgeFluids.hotcoolant){
+			return new Object[] { ModForgeFluids.coolant, 1, 1, 500 };
+		}else if(type == ModForgeFluids.wastegas){
+			return new Object[] { ModForgeFluids.wastefluid, 1, 1,1000000 };
 		}
 
 		return null;

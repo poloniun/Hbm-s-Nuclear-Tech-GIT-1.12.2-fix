@@ -121,7 +121,7 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 				boilCoolant();
 			
 			coolPassively();
-			jump();
+			//jump();
 			
 			NBTTagCompound data = new NBTTagCompound();
 			this.writeToNBT(data);

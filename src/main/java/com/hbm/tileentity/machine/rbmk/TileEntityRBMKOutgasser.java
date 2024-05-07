@@ -65,9 +65,11 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 			
 			if(world.getTotalWorldTime() % 10 == 0)
 				fillFluidInit(gas);
-			
-			if(!canProcess()) {
-				this.progress = 0;
+			if(canProcess()) {
+			if(progress > duration) {
+				process();
+				this.markDirty();
+			}
 			}
 		}
 		
@@ -86,13 +88,14 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 	@Override
 	public void receiveFlux(NType type, double flux) {
 		
-		if(canProcess()) {
+
 			
 			if(type == NType.FAST)
 				flux *= 0.2D;
 			
 			progress += flux * RBMKDials.getOutgasserMod(world);
-			
+			progress = progress > 1000000000000.0D ? 1000000000000.0D : progress ;
+		if(canProcess()) {	
 			if(progress > duration) {
 				process();
 				this.markDirty();
@@ -134,7 +137,7 @@ public class TileEntityRBMKOutgasser extends TileEntityRBMKSlottedBase implement
 		
 		ItemStack output = RBMKOutgasserRecipes.getOutput(inventory.getStackInSlot(0));
 		inventory.getStackInSlot(0).shrink(1);
-		this.progress = 0;
+		this.progress -= duration;
 		
 		if(output.getItem() == ModItems.fluid_icon) {
 			gas.fill(new FluidStack(gasType, ItemFluidIcon.getQuantity(output)), true);

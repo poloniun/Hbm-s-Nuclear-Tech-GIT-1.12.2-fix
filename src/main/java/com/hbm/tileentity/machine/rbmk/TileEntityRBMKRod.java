@@ -98,7 +98,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IEne
 				if(RBMKDials.getGeneratorA(world)&&this.heat>20D)
 					Generate();	
 				
-				if(!RBMKDials.getGeneratorA(world))		{	
+				if(!RBMKDials.getMeltdownsDisabled(world))		{	
 				if(!this.hasLid()) {
 					RadiationSavedData.incrementRad(world, pos, (float) ((this.fluxFast + this.fluxSlow) * 0.05F), (float) ((this.fluxFast + this.fluxSlow) * 10F));
 				} else{
@@ -278,8 +278,8 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IEne
 				hits++;
 		}
 		
-		if(hits > 0)
-			RadiationSavedData.incrementRad(world, pos, (float) (flux * 0.05F * hits / (float)limit), (float) (flux * 0.05F * hits / (float)limit) * 10F);
+		//if(hits > 0)
+		//	RadiationSavedData.incrementRad(world, pos, (float) (flux * 0.05F * hits / (float)limit), (float) (flux * 0.05F * hits / (float)limit) * 10F);
 		
 		return 0;
 	}

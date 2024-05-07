@@ -1056,6 +1056,8 @@ public class ModBlocks {
 	public static final int guiID_machine_generator = 15;
 	
 	public static final Block machine_reactor_small = new MachineReactorSmall(Material.IRON, "machine_reactor_small").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block initial_reactor = new MachineReactorSmall(Material.IRON, "initial_reactor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+
 	public static final int guiID_reactor_small = 65;
 
 	public static final Block machine_controller = new MachineReactorControl(Material.IRON, "machine_controller").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
@@ -1063,6 +1065,7 @@ public class ModBlocks {
 	
 	public static final Block machine_reactor = new MachineReactor(Material.IRON, "machine_reactor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final Block machine_reactor_on = new MachineReactor(Material.IRON, "machine_reactor_on").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null);
+
 	public static final int guiID_reactor = 9;
 
 	public static final int guiID_radio_torch_sender = 130;
@@ -1119,10 +1122,16 @@ public class ModBlocks {
 	public static final int guiID_machine_rtg = 42;
 	
 	public static final Block machine_turbine = new MachineTurbine(Material.IRON, "machine_turbine").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block rbmk_turbine = new MachineTurbine(Material.IRON, "rbmk_turbine").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+
 	public static final int guiID_machine_turbine = 74;
 	public static final Block machine_large_turbine = new MachineLargeTurbine(Material.IRON, "machine_large_turbine").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block rbmk_large_turbine = new MachineLargeTurbine(Material.IRON, "rbmk_large_turbine").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+
 	public static final int guiID_machine_large_turbine = 102;
 	public static final Block machine_chungus = new MachineChungus(Material.IRON, "machine_chungus").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block rbmk_chungus = new MachineChungus(Material.IRON, "rbmk_chungus").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+
 	public static final Block machine_condenser = new MachineCondenser(Material.IRON, "machine_condenser").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final Block machine_tower_small = new MachineTowerSmall(Material.IRON, "machine_tower_small").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final Block machine_tower_large = new MachineTowerLarge(Material.IRON, "machine_tower_large").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);

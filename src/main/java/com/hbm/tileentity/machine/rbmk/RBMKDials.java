@@ -114,7 +114,7 @@ public static final String KEY_SAVE_DIALS = "dialSaveDials";
 	 * @return [0;250]
 	 */
 	public static int getColumnHeight(World world) {
-		return MathHelper.clamp(shittyWorkaroundParseInt(world.getGameRules().getString(KEY_COLUMN_HEIGHT), 4), 1, 250) - 1;
+		return MathHelper.clamp(shittyWorkaroundParseInt(world.getGameRules().getString(KEY_COLUMN_HEIGHT), 2), 1, 250) - 1;
 	}
 	
 	/**

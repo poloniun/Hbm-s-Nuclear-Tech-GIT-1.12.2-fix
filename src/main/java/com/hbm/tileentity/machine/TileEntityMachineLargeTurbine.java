@@ -14,6 +14,10 @@ import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.FluidTypePacketTest;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.machine.rbmk.RBMKBase;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKBase;
+import com.hbm.tileentity.machine.rbmk.RBMKDials;
 
 import api.hbm.energy.IEnergyGenerator;
 import net.minecraft.item.ItemStack;
@@ -35,11 +39,14 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
+import net.minecraft.world.World;
+import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityMachineLargeTurbine extends TileEntityMachineBase implements ITickable, IEnergyGenerator, IFluidHandler, ITankPacketAcceptor {
 
 	public long power;
-	public static final long maxPower = 100000000;
+	public static final long maxPower = 1000000000000000L;
 	public int age = 0;
 	public FluidTank[] tanks;
 	public Fluid[] types = new Fluid[2];
@@ -51,8 +58,8 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	public TileEntityMachineLargeTurbine() {
 		super(7);
 		tanks = new FluidTank[2];
-		tanks[0] = new FluidTank(512000);
-		tanks[1] = new FluidTank(10240000);
+		tanks[0] = new FluidTank(128000000);
+		tanks[1] = new FluidTank(128000000);
 		types[0] = ModForgeFluids.steam;
 		types[1] = ModForgeFluids.spentsteam;
 	}
@@ -88,6 +95,31 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 			power = Library.chargeItemsFromTE(inventory, 4, power, maxPower);
 			
 			boolean operational = false;
+			if(RBMKDials.getReasimCoolantBoilers(world)&& world.getBlockState(pos).getBlock()==ModBlocks.rbmk_large_turbine){
+			types[0] = ModForgeFluids.wastegas; 
+			for(int i = 0; i < 13; i++) {
+				for(int j = 0; j <13; j++ ){
+				Block b = world.getBlockState(new BlockPos(pos.getX() + i -6, pos.getY(), pos.getZ() +j -6)).getBlock();
+				
+				if(b instanceof RBMKBase) {
+					int[] pos = ((RBMKBase)b).findCore(world, this.pos.getX() + i -6, this.pos.getY(), this.pos.getZ() + j -6);
+					
+					if(pos != null) {
+						TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+						
+
+						if(te instanceof TileEntityRBMKBase) {
+							TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
+							
+							int prov = Math.min(tanks[0].getCapacity() - tanks[0].getFluidAmount(), rbmk.steam);
+							rbmk.steam -= prov;
+							tanks[0].fill(new FluidStack(types[0], prov), true);
+						}
+					}
+				}
+			}
+			}
+			}
 
 			Object[] outs = MachineRecipes.getTurbineOutput(types[0]);
 
@@ -116,6 +148,27 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 					operational = true;
 			}
 
+			if(RBMKDials.getReasimCoolantBoilers(world)&& world.getBlockState(pos).getBlock()==ModBlocks.rbmk_large_turbine){
+			for(int i = 0; i < 13; i++) {
+				for(int j = 0; j <13; j++ ){
+				Block b = world.getBlockState(new BlockPos(pos.getX() + i -6, pos.getY(), pos.getZ() +j -6)).getBlock();
+				
+				if(b instanceof RBMKBase) {
+					int[] pos = ((RBMKBase)b).findCore(world, this.pos.getX() + i -6, this.pos.getY(), this.pos.getZ() + j -6);
+					
+					if(pos != null) {
+						TileEntity te = world.getTileEntity(new BlockPos(pos[0], pos[1], pos[2]));
+						
+						if(te instanceof TileEntityRBMKBase) {
+							TileEntityRBMKBase rbmk = (TileEntityRBMKBase) te;
+							
+							int prov = Math.min(TileEntityRBMKBase.maxWater - rbmk.water, tanks[1].getFluidAmount());
+							rbmk.water += prov;
+							tanks[1].drain(prov, true);						}
+					}
+				}
+			}}
+		}
 			FFUtils.fillFluidContainer(inventory, tanks[1], 5, 6);
 
 			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tanks[0], tanks[1]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));

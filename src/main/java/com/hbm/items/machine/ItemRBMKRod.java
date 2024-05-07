@@ -37,7 +37,7 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 	public double heat = 1D;				//heat produced per outFlux
 	public double yield;					//total potential inFlux the rod can take in its lifetime
 	public double meltingPoint = 1000D;		//the maximum heat of the rod's hull before shit hits the fan. the core can be as hot as it wants to be
-	public double diffusion = 0.02D;		//the speed at which the core heats the hull
+	public double diffusion = 0.25D;		//the speed at which the core heats the hull
 	public NType nType = NType.SLOW;		//neutronType, the most efficient neutron type for fission
 	public NType rType = NType.FAST;		//releaseType, the type of neutrons released by this fuel
 
@@ -218,10 +218,10 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		double hullHeat = getHullHeat(stack);
 		double meltdownPercent = getMeltdownPercent(stack);
 		
-		if(hullHeat > this.meltingPoint) {
-			meltdownPercent += 0.05D * hullHeat/this.meltingPoint;
-			setMeltdownPercent(stack, meltdownPercent);
-		}
+		//if(hullHeat > this.meltingPoint) {
+		//	meltdownPercent += 0.05D * hullHeat/this.meltingPoint;
+		//	setMeltdownPercent(stack, meltdownPercent);
+		//}
 
 		if(coreHeat > hullHeat) {
 			
@@ -247,14 +247,14 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		//metldown! the hull melts so the entire structure stops making sense
 		//hull and fuel core heat, fuel skin heat are instantly averaged,
 		//that average is sent to the component which is always fatal
-		if(getMeltdownPercent(stack) >= 100) {
-			setMeltdownPercent(stack, 100);
-			double coreHeat = getCoreHeat(stack);
-			double avg = (heat + hullHeat + coreHeat) / 3D;
-			setCoreHeat(stack, avg);
-			setHullHeat(stack, avg);
-			return avg;
-		}
+		//if(getMeltdownPercent(stack) >= 100) {
+		//	setMeltdownPercent(stack, 100);
+		//	double coreHeat = getCoreHeat(stack);
+		//	double avg = (heat + hullHeat + coreHeat) / 3D;
+		//	setCoreHeat(stack, avg);
+		//	setHullHeat(stack, avg);
+		//	return avg;
+		//}
 		
 		if(hullHeat <= heat)
 			return 0;

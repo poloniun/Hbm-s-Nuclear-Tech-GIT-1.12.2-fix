@@ -15,7 +15,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 public class ItemAmatExtractor extends ItemCustomLore {
 
 	public ItemAmatExtractor(String s){
@@ -25,20 +28,22 @@ public class ItemAmatExtractor extends ItemCustomLore {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(world.getBlockState(pos).getBlock() instanceof BlockCrashedBomb) {
-			if(!world.isRemote && ItemCell.hasEmptyCell(player)) {
-				
+		//	if(!world.isRemote && ItemCell.hasEmptyCell(player)) {
+			if(!world.isRemote) {				
 				float chance = world.rand.nextFloat();
 				
-				if(chance < 0.01) {
-					((BlockCrashedBomb) world.getBlockState(pos).getBlock()).explode(world, pos);
-				} else if(chance <= 0.3) {
-					ItemCell.consumeEmptyCell(player);
+				if(chance < 0.15) {
 	
-					if(!player.inventory.addItemStackToInventory(ItemCell.getFullCell(ModForgeFluids.balefire))) {
-						player.dropItem(ItemCell.getFullCell(ModForgeFluids.balefire), false);
+					world.spawnEntity(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(ModItems.powder_balefire)));
+					
+				} else if(chance <= 0.5) {
+					//ItemCell.consumeEmptyCell(player);
+	
+					if(!player.inventory.addItemStackToInventory(ItemCell.getFullCell(ModForgeFluids.aschrab))) {
+						player.dropItem(ItemCell.getFullCell(ModForgeFluids.aschrab), false);
 					}
 				} else {
-					ItemCell.consumeEmptyCell(player);
+					//ItemCell.consumeEmptyCell(player);
 	
 					if(!player.inventory.addItemStackToInventory(ItemCell.getFullCell(ModForgeFluids.amat))) {
 						player.dropItem(ItemCell.getFullCell(ModForgeFluids.amat), false);

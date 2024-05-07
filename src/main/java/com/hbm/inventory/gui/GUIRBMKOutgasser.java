@@ -67,6 +67,7 @@ public class GUIRBMKOutgasser extends GuiInfoContainer {
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
 		int progress = (int) (rod.progress * 45 / rod.duration);
+		if (progress>45||progress<0) progress =45; 
 		drawTexturedModalRect(guiLeft + 66, guiTop + 58, 190, 0, progress, 6);
 		
 		int gas = (int) (rod.gas.getFluidAmount() * 58 / rod.gas.getCapacity());
