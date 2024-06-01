@@ -48,6 +48,9 @@ public class RBMKFuelRecipes {
 		addRod(ModItems.rbmk_fuel_zfb_am_mix);
 		addRod(ModItems.rbmk_fuel_balefire);
 		addRod(ModItems.rbmk_fuel_drx);
+		addRod(ModItems.rbmk_fuel_euph);
+		addRod(ModItems.rbmk_fuel_sa326);
+		addRod(ModItems.rbmk_fuel_dnt);
 	}
 
 	public static void addRod(ItemRBMKRod rod){
