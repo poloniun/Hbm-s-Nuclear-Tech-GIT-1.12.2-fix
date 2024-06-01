@@ -3044,7 +3044,7 @@ public class ModItems {
 			;
 	public static final ItemRBMKRod rbmk_fuel_drx = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_drx, "rbmk_fuel_drx")
 			.setYield(1000000D)
-			.setStats(800, 10)
+			.setStats(0.1, 10)
 			.setFunction(EnumBurnFunc.QUADRATIC)
 			.setHeat(0.1D)
 			.setMeltingPoint(100000)
@@ -3054,7 +3054,7 @@ public class ModItems {
 			.addDigamma(0.1F).toItem();
 	public static final ItemRBMKRod rbmk_fuel_sa326 = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_sa326, "rbmk_fuel_sa326")
 			.setYield(100000000D)
-			.setStats(2000, 1000)
+			.setStats(20, 1000)
 			.setFunction(EnumBurnFunc.LINEAR)
 			.setHeat(0.6D)
 			.setDiffusion(0.25D)
@@ -3064,7 +3064,7 @@ public class ModItems {
 			;
 	public static final ItemRBMKRod rbmk_fuel_euph = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_euph, "rbmk_fuel_euph")
 			.setYield(1000000D)
-			.setStats(1200, 10)
+			.setStats(0.12, 10)
 			.setFunction(EnumBurnFunc.QUADRATIC)
 			.setHeat(0.1D)
 			.setDiffusion(0.5D)
@@ -3075,7 +3075,7 @@ public class ModItems {
 			;
 	public static final ItemRBMKRod rbmk_fuel_dnt = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_dnt, "rbmk_fuel_dnt")
 			.setYield(1000000D)
-			.setStats(1280, 10)
+			.setStats(0.128, 10)
 			.setFunction(EnumBurnFunc.QUADRATIC)
 			.setHeat(0.1D)
 			.setDiffusion(0.5D)
