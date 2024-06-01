@@ -86,11 +86,28 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IEne
 				this.cherenkovB = rod.cherenkovB;
 				
 				double fluxIn;
+				if(RBMKDials.getGeneratorA(world) && (inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_ra226be||inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_po210be||
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_pu238be))
+				{	
+					rod.selfRate = 2000.0D;
+					if(inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_pu238be)	rod.selfRate = 90000.0D;
+				}
+				if(RBMKDials.getGeneratorA(world) && (inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_balefire_gold || 
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_flashlead ||inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_mes))
+					rod.selfRate = 10.0D;
 				if(RBMKDials.getRodUnique(world) && rod.selfRate == 0)	
-					fluxIn = fluxFromType(rod.nType) + 50.0D;
-				else 
-					fluxIn = fluxFromType(rod.nType);
-				fluxOut = rod.burn(world, inventory.getStackInSlot(0), fluxIn);
+					rod.selfRate = 50.0D;
+				fluxIn = fluxFromType(rod.nType);
+				if(RBMKDials.getGeneratorA(world) && (inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_ueu ||
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_meu || inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_heu235 ||
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_thmeu || inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_lep ||
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_mep || inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_men ||
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_hen || inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_leaus ||
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_heaus || inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_mox ||
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_les || inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_mes ||
+				inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_balefire_gold || inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_flashlead))
+					fluxOut = rod.burnnew(world, inventory.getStackInSlot(0), fluxIn);
+				else	fluxOut = rod.burn(world, inventory.getStackInSlot(0), fluxIn);
 				NType rType = rod.rType;
 				
 				rod.updateHeat(world, inventory.getStackInSlot(0), 1.0D);
@@ -125,7 +142,20 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IEne
 				if(fluxOut > 0){
 					spreadFlux(this.isModerated() ? NType.SLOW : rType, fluxOut);
 				}
-				
+				if (RBMKDials.getGeneratorA(world) ){
+					if((inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_ueu) && rod.getYield(inventory.getStackInSlot(0)) == 0)
+						inventory.setStackInSlot(0,new ItemStack(ModItems.rbmk_fuel_hep239));
+					else if((inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_thmeu) && rod.getYield(inventory.getStackInSlot(0)) == 0)
+						inventory.setStackInSlot(0, new ItemStack(ModItems.rbmk_fuel_heu233));						
+					else if((inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_heu233) && rod.getYield(inventory.getStackInSlot(0)) == 0)
+						inventory.setStackInSlot(0, new ItemStack(ModItems.rbmk_fuel_heu235));
+					else if((inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_heu235) && rod.getYield(inventory.getStackInSlot(0)) == 0)
+						inventory.setStackInSlot(0, new ItemStack(ModItems.rbmk_fuel_hen));
+					else if((inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_leaus) && rod.getYield(inventory.getStackInSlot(0)) == 0)
+						inventory.setStackInSlot(0, new ItemStack(ModItems.rbmk_fuel_heaus));
+					else if((inventory.getStackInSlot(0).getItem()== ModItems.rbmk_fuel_meu) && rod.getYield(inventory.getStackInSlot(0)) == 0)
+						inventory.setStackInSlot(0, new ItemStack(ModItems.rbmk_fuel_mep));
+					}				
 				hasRod = true;
 			} else {
 

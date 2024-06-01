@@ -2729,7 +2729,9 @@ public class ModItems {
 	public static final ItemRBMKPellet rbmk_pellet_flashlead = (ItemRBMKPellet) new ItemRBMKPellet("Antihydrogen confined by a Magnetized Gold-198 & Lead-209 Lattice", "rbmk_pellet_flashlead").addRadiation(ItemHazard.aupb * ItemHazard.billet).toItem();
 	public static final ItemRBMKPellet rbmk_pellet_balefire = (ItemRBMKPellet) new ItemRBMKPellet("Draconic Flames", "rbmk_pellet_balefire").addRadiation(ItemHazard.bf).toItem();
 	public static final ItemRBMKPellet rbmk_pellet_drx = (ItemRBMKPellet) new ItemRBMKPellet(TextFormatting.OBFUSCATED + "can't you hear, can't you hear the thunder?", "rbmk_pellet_drx").addRadiation(12500).addDigamma(0.0125F).toItem();
-
+	public static final ItemRBMKPellet rbmk_pellet_sa326 = (ItemRBMKPellet) new ItemRBMKPellet("Pure Schrabidium-326", "rbmk_pellet_sa326");
+	public static final ItemRBMKPellet rbmk_pellet_euph = (ItemRBMKPellet) new ItemRBMKPellet("Pure Euphemium", "rbmk_pellet_euph");
+	public static final ItemRBMKPellet rbmk_pellet_dnt = (ItemRBMKPellet) new ItemRBMKPellet("Pure Dineutronium", "rbmk_pellet_dnt");
 	
 	public static final Item rbmk_fuel_empty = new ItemBase("rbmk_fuel_empty").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab);
 	public static final ItemRBMKRod rbmk_fuel_ueu = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_ueu, "rbmk_fuel_ueu")
@@ -3041,8 +3043,8 @@ public class ModItems {
 			.addRadiation(800000F).toItem()
 			;
 	public static final ItemRBMKRod rbmk_fuel_drx = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_drx, "rbmk_fuel_drx")
-			.setYield(100000000D)
-			.setStats(0.1, 10)
+			.setYield(1000000D)
+			.setStats(800, 10)
 			.setFunction(EnumBurnFunc.QUADRATIC)
 			.setHeat(0.1D)
 			.setMeltingPoint(100000)
@@ -3050,7 +3052,38 @@ public class ModItems {
 			.setCherenkovColor(1F, 0.25F, 0F)
 			.addRadiation(1200000F)
 			.addDigamma(0.1F).toItem();
-
+	public static final ItemRBMKRod rbmk_fuel_sa326 = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_sa326, "rbmk_fuel_sa326")
+			.setYield(100000000D)
+			.setStats(2000, 1000)
+			.setFunction(EnumBurnFunc.LINEAR)
+			.setHeat(0.6D)
+			.setDiffusion(0.25D)
+			.setFuelColor(0.369F, 0.878F, 0.999F)
+			.setCherenkovColor(0.25F, 1F, 1F)
+			.addRadiation(800F).toItem()
+			;
+	public static final ItemRBMKRod rbmk_fuel_euph = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_euph, "rbmk_fuel_euph")
+			.setYield(1000000D)
+			.setStats(1200, 10)
+			.setFunction(EnumBurnFunc.QUADRATIC)
+			.setHeat(0.1D)
+			.setDiffusion(0.5D)
+			.setMeltingPoint(100000)
+			.setFuelColor(0.999F, 0.878F, 0.77F)
+			.setCherenkovColor(0.95F, 0.3F, 0.2F)
+			.addRadiation(8000F).toItem()
+			;
+	public static final ItemRBMKRod rbmk_fuel_dnt = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_dnt, "rbmk_fuel_dnt")
+			.setYield(1000000D)
+			.setStats(1280, 10)
+			.setFunction(EnumBurnFunc.QUADRATIC)
+			.setHeat(0.1D)
+			.setDiffusion(0.5D)
+			.setMeltingPoint(100000)
+			.setFuelColor(0.369F, 0.238F, 0.777F)
+			.setCherenkovColor(0.25F, 0.56F, 0.99F)
+			.addRadiation(80000F).toItem()
+			;
 	public static final Item pellet_schrabidium = new WatzFuel(ItemHazard.sa326 * 5F, true, 50000, 1400000, 0.975F, 200, 1.05F, 1.05F, "pellet_schrabidium").setCreativeTab(MainRegistry.controlTab).setMaxStackSize(1);
 	public static final Item pellet_hes = new WatzFuel(ItemHazard.hes * 5F, true, 108000, 650000, 1F, 85, 1, 1.025F, "pellet_hes").setCreativeTab(MainRegistry.controlTab).setMaxStackSize(1);
 	public static final Item pellet_mes = new WatzFuel(ItemHazard.mes * 5F, true, 216000, 230000, 1.025F, 50, 1, 1F, "pellet_mes").setCreativeTab(MainRegistry.controlTab).setMaxStackSize(1);
@@ -3520,7 +3553,16 @@ public class ModItems {
 	public static final Item defuser = new ItemTooling(ToolType.DEFUSER, 100, "defuser").setMaxStackSize(1).setFull3D().setCreativeTab(MainRegistry.nukeTab);
 	public static final Item defuser_desh = new ItemTooling(ToolType.DEFUSER, -1, "defuser_desh").setMaxStackSize(1).setFull3D().setCreativeTab(MainRegistry.nukeTab);
 	public static final Item meltdown_tool = new ItemDyatlov("meltdown_tool").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab);
-	
+
+	public static final Item waste_pu239 = new ItemBase("waste_pu239").setCreativeTab(MainRegistry.controlTab);
+	public static final Item waste_np237 = new ItemBase("waste_np237").setCreativeTab(MainRegistry.controlTab);
+	public static final Item waste_sa327 = new ItemBase("waste_sa327").setCreativeTab(MainRegistry.controlTab);
+	public static final Item bred_lead = new ItemBase("bred_lead").setCreativeTab(MainRegistry.controlTab);	
+	public static final Item bred_bismuth = new ItemBase("bred_bismuth").setCreativeTab(MainRegistry.controlTab);	
+	public static final Item bred_lithium = new ItemBase("bred_lithium").setCreativeTab(MainRegistry.controlTab);	
+	public static final Item waste_pb209 = new ItemBase("waste_pb209").setCreativeTab(MainRegistry.controlTab);	
+	public static final Item waste_euph = new ItemBase("waste_euph").setCreativeTab(MainRegistry.controlTab);	
+
 	//Chopper
 	public static final Item chopper_head = new ItemBase("chopper_head").setCreativeTab(MainRegistry.partsTab);
 	public static final Item chopper_gun = new ItemBase("chopper_gun").setCreativeTab(MainRegistry.partsTab);

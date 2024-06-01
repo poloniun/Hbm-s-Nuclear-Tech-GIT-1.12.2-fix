@@ -500,6 +500,12 @@ public class FFUtils {
 			return true;
 		}
 
+		if(in.getItem() == ModItems.bred_lithium && tank.fill(new FluidStack(ModForgeFluids.tritium, 960), false) == 960){
+			tank.fill(new FluidStack(ModForgeFluids.tritium, 960), true);
+			in.shrink(1);
+			return true;
+		}
+
 		//That's it. I'm making a fluid container registry just so I don't have to make this method any worse.
 		if(FluidContainerRegistry.hasFluid(in.getItem())) {
 			FluidStack fluid = FluidContainerRegistry.getFluidFromItem(in.getItem());

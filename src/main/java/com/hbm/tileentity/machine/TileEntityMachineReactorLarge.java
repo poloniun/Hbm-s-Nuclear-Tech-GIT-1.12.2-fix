@@ -422,9 +422,9 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		fuel -= consumption;
 		waste += consumption;
 		
-		int heat = (consumption / size) * type.heat / fuelMult;
+		int heat =consumption / size;
 		
-		this.power += heat;
+		this.power += (long)heat * type.heat / fuelMult;
 		
 		if(consumption > 0 || heat > 0)
 			markDirty();
@@ -577,23 +577,63 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			int y = pos.getY();
 			int z = pos.getZ();
 			
-			if(world.getBlockState(mPos.setPos(x, y, z - 2)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x, y, z - 2)).getValue(BlockHorizontal.FACING) == EnumFacing.NORTH)
+			if(world.getBlockState(mPos.setPos(x, y, z - 2)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x, y, z - 2)).getValue(BlockHorizontal.FACING) == EnumFacing.NORTH){
 				tryEjectInto(mPos.setPos(x, y, z - 3));
-			if(world.getBlockState(mPos.setPos(x, y, z + 2)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x, y, z + 2)).getValue(BlockHorizontal.FACING) == EnumFacing.SOUTH)
+				tryEjectInto(mPos.setPos(x + 1, y, z - 2));
+				tryEjectInto(mPos.setPos(x - 1, y, z - 2));
+				tryEjectInto(mPos.setPos(x, y + 1, z - 2));
+				tryEjectInto(mPos.setPos(x, y - 1, z - 2));
+			}
+			if(world.getBlockState(mPos.setPos(x, y, z + 2)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x, y, z + 2)).getValue(BlockHorizontal.FACING) == EnumFacing.SOUTH){
 				tryEjectInto(mPos.setPos(x, y, z + 3));
-			if(world.getBlockState(mPos.setPos(x - 2, y, z)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x - 2, y, z)).getValue(BlockHorizontal.FACING) == EnumFacing.WEST)
+				tryEjectInto(mPos.setPos(x + 1, y, z + 2));
+				tryEjectInto(mPos.setPos(x - 1, y, z + 2));
+				tryEjectInto(mPos.setPos(x, y + 1, z + 2));
+				tryEjectInto(mPos.setPos(x, y - 1, z + 2));
+			}
+			if(world.getBlockState(mPos.setPos(x - 2, y, z)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x - 2, y, z)).getValue(BlockHorizontal.FACING) == EnumFacing.WEST){
 				tryEjectInto(mPos.setPos(x - 3, y, z));
-			if(world.getBlockState(mPos.setPos(x + 2, y, z)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x + 2, y, z)).getValue(BlockHorizontal.FACING) == EnumFacing.EAST)
+				tryEjectInto(mPos.setPos(x - 2, y + 1, z));
+				tryEjectInto(mPos.setPos(x - 2, y - 1, z));
+				tryEjectInto(mPos.setPos(x - 2, y, z + 1));
+				tryEjectInto(mPos.setPos(x - 2, y, z - 1));
+			}
+			if(world.getBlockState(mPos.setPos(x + 2, y, z)).getBlock() == ModBlocks.reactor_ejector && world.getBlockState(mPos.setPos(x + 2, y, z)).getValue(BlockHorizontal.FACING) == EnumFacing.EAST){
 				tryEjectInto(mPos.setPos(x + 3, y, z));
+				tryEjectInto(mPos.setPos(x + 2, y + 1, z));
+				tryEjectInto(mPos.setPos(x + 2, y - 1, z));
+				tryEjectInto(mPos.setPos(x + 2, y, z + 1));
+				tryEjectInto(mPos.setPos(x + 2, y, z - 1));
+			}
 
-			if(world.getBlockState(mPos.setPos(x, y, z - 2)).getBlock() == ModBlocks.reactor_inserter && world.getBlockState(mPos.setPos(x, y, z - 2)).getValue(BlockHorizontal.FACING) == EnumFacing.NORTH)
+			if(world.getBlockState(mPos.setPos(x, y, z - 2)).getBlock() == ModBlocks.reactor_inserter && world.getBlockState(mPos.setPos(x, y, z - 2)).getValue(BlockHorizontal.FACING) == EnumFacing.NORTH){
 				tryInsertFrom(mPos.setPos(x, y, z - 3));
-			if(world.getBlockState(mPos.setPos(x, y, z + 2)).getBlock() == ModBlocks.reactor_inserter && world.getBlockState(mPos.setPos(x, y, z + 2)).getValue(BlockHorizontal.FACING) == EnumFacing.SOUTH)
+				tryInsertFrom(mPos.setPos(x + 1, y, z - 2));
+				tryInsertFrom(mPos.setPos(x - 1, y, z - 2));
+				tryInsertFrom(mPos.setPos(x, y + 1, z - 2));
+				tryInsertFrom(mPos.setPos(x, y - 1, z - 2));
+			}
+			if(world.getBlockState(mPos.setPos(x, y, z + 2)).getBlock() == ModBlocks.reactor_inserter && world.getBlockState(mPos.setPos(x, y, z + 2)).getValue(BlockHorizontal.FACING) == EnumFacing.SOUTH){
 				tryInsertFrom(mPos.setPos(x, y, z + 3));
-			if(world.getBlockState(mPos.setPos(x - 2, y, z)).getBlock() == ModBlocks.reactor_inserter && world.getBlockState(mPos.setPos(x - 2, y, z)).getValue(BlockHorizontal.FACING) == EnumFacing.WEST)
+				tryInsertFrom(mPos.setPos(x + 1, y, z + 2));
+				tryInsertFrom(mPos.setPos(x - 1, y, z + 2));
+				tryInsertFrom(mPos.setPos(x, y + 1, z + 2));
+				tryInsertFrom(mPos.setPos(x, y - 1, z + 2));
+			}
+			if(world.getBlockState(mPos.setPos(x - 2, y, z)).getBlock() == ModBlocks.reactor_inserter && world.getBlockState(mPos.setPos(x - 2, y, z)).getValue(BlockHorizontal.FACING) == EnumFacing.WEST){
 				tryInsertFrom(mPos.setPos(x - 3, y, z));
-			if(world.getBlockState(mPos.setPos(x + 2, y, z)).getBlock() == ModBlocks.reactor_inserter && world.getBlockState(mPos.setPos(x + 2, y, z)).getValue(BlockHorizontal.FACING) == EnumFacing.EAST)
+				tryInsertFrom(mPos.setPos(x - 2, y + 1, z));
+				tryInsertFrom(mPos.setPos(x - 2, y - 1, z));
+				tryInsertFrom(mPos.setPos(x - 2, y, z + 1));
+				tryInsertFrom(mPos.setPos(x - 2, y, z - 1));
+			}
+			if(world.getBlockState(mPos.setPos(x + 2, y, z)).getBlock() == ModBlocks.reactor_inserter && world.getBlockState(mPos.setPos(x + 2, y, z)).getValue(BlockHorizontal.FACING) == EnumFacing.EAST){
 				tryInsertFrom(mPos.setPos(x + 3, y, z));
+				tryInsertFrom(mPos.setPos(x + 2, y + 1, z));
+				tryInsertFrom(mPos.setPos(x + 2, y - 1, z));
+				tryInsertFrom(mPos.setPos(x + 2, y, z + 1));
+				tryInsertFrom(mPos.setPos(x + 2, y, z - 1));
+			}
 
 			PacketDispatcher.wrapper.sendToAllAround(new LargeReactorPacket(pos, rods, coreHeat, hullHeat, fuel, maxFuel, waste, maxWaste, type.getID()), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
 		}
@@ -616,7 +656,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	
 	private void tryEjectInto(BlockPos pos) {
 		
-		int wSize = type.toString().equals(ReactorFuelType.SCHRABIDIUM.toString()) ? 60 * fuelMult : 6 * fuelMult;
+		int wSize = type.toString().equals(ReactorFuelType.SCHRABIDIUM.toString()) ? 60 * fuelMult : type.toString().equals(ReactorFuelType.LITHIUM.toString()) ? 9 * fuelMult :  6 * fuelMult;
 		
 		if(waste < wSize)
 			return;
@@ -640,6 +680,45 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 				break;
 			case THORIUM:
 				waste = ModItems.waste_thorium_hot;
+				break;
+			case NU:
+				waste = ModItems.billet_pu239;
+				break;
+			case PU239:
+				waste = ModItems.waste_pu239;
+				break;
+			case TH232:
+				waste = ModItems.billet_u233;
+				break;
+			case U233:
+				waste = ModItems.billet_u235;
+				break;
+			case U235:
+				waste = ModItems.billet_neptunium;
+				break;
+			case NP237:
+				waste = ModItems.waste_np237;
+				break;
+			case SA326:
+				waste = ModItems.billet_solinium;
+				break;
+			case SA327:
+				waste = ModItems.waste_sa327;
+				break;
+			case EUPH:
+				waste = ModItems.waste_euph;
+				break;
+			case LEAD:
+				waste = ModItems.bred_lead;
+				break;
+			case BI:
+				waste = ModItems.bred_bismuth;
+				break;
+			case PB209:
+				waste = ModItems.waste_pb209;
+				break;
+			case LITHIUM:
+				waste = ModItems.bred_lithium;
 				break;
 			default:
 				waste = ModItems.waste_uranium_hot;
@@ -863,18 +942,34 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		int x = pos.getX();
 		int y = pos.getY();
 		int z = pos.getZ();
-		if(world.getBlockState(mPos.setPos(x - 2, y, z)).getBlock() == ModBlocks.reactor_hatch)
+		if(world.getBlockState(mPos.setPos(x - 2, y, z)).getBlock() == ModBlocks.reactor_hatch){
 			this.sendPower(world, new BlockPos(pos.getX() - 3, pos.getY(), pos.getZ()),ForgeDirection.WEST);
-		
-		if(world.getBlockState(mPos.setPos(x + 2, y, z)).getBlock() == ModBlocks.reactor_hatch)
+			this.sendPower(world, new BlockPos(pos.getX() - 2, pos.getY() - 1, pos.getZ()),ForgeDirection.DOWN);
+			this.sendPower(world, new BlockPos(pos.getX() - 2, pos.getY() + 1, pos.getZ()),ForgeDirection.UP);
+			this.sendPower(world, new BlockPos(pos.getX() - 2, pos.getY(), pos.getZ() - 1),ForgeDirection.NORTH);
+			this.sendPower(world, new BlockPos(pos.getX() - 2, pos.getY(), pos.getZ() + 1),ForgeDirection.SOUTH);
+		}
+		if(world.getBlockState(mPos.setPos(x + 2, y, z)).getBlock() == ModBlocks.reactor_hatch){
 			this.sendPower(world, new BlockPos(pos.getX() + 3, pos.getY(), pos.getZ()), ForgeDirection.EAST);
-		
-		if(world.getBlockState(mPos.setPos(x, y, z - 2)).getBlock() == ModBlocks.reactor_hatch)
+			this.sendPower(world, new BlockPos(pos.getX() + 2, pos.getY() - 1, pos.getZ()),ForgeDirection.DOWN);
+			this.sendPower(world, new BlockPos(pos.getX() + 2, pos.getY() + 1, pos.getZ()),ForgeDirection.UP);
+			this.sendPower(world, new BlockPos(pos.getX() + 2, pos.getY(), pos.getZ() - 1),ForgeDirection.NORTH);
+			this.sendPower(world, new BlockPos(pos.getX() + 2, pos.getY(), pos.getZ() + 1),ForgeDirection.SOUTH);
+		}
+		if(world.getBlockState(mPos.setPos(x, y, z - 2)).getBlock() == ModBlocks.reactor_hatch){
 			this.sendPower(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 3), ForgeDirection.NORTH);
-		
-		if(world.getBlockState(mPos.setPos(x, y, z + 2)).getBlock() == ModBlocks.reactor_hatch)
+			this.sendPower(world, new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ() - 2),ForgeDirection.DOWN);
+			this.sendPower(world, new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ() - 2),ForgeDirection.UP);
+			this.sendPower(world, new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ() - 2),ForgeDirection.EAST);
+			this.sendPower(world, new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ() - 2),ForgeDirection.WEST);
+		}
+		if(world.getBlockState(mPos.setPos(x, y, z + 2)).getBlock() == ModBlocks.reactor_hatch){
 			this.sendPower(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 3), ForgeDirection.SOUTH);
-
+			this.sendPower(world, new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ() + 2),ForgeDirection.DOWN);
+			this.sendPower(world, new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ() + 2),ForgeDirection.UP);
+			this.sendPower(world, new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ() + 2),ForgeDirection.EAST);
+			this.sendPower(world, new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ() + 2),ForgeDirection.WEST);
+		}
 		this.sendPower(world, new BlockPos(pos.getX(), pos.getY() + height + 1, pos.getZ()), ForgeDirection.UP);
 		this.sendPower(world,  new BlockPos(pos.getX(), pos.getY() - depth - 1, pos.getZ()),ForgeDirection.DOWN);
 	}
@@ -939,6 +1034,19 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		PLUTONIUM(312500),
 		MOX(250000),
 		SCHRABIDIUM(2085000),
+		NU(1),
+		PU239(360000),
+		TH232(1),
+		U233(225000),
+		U235(300000),
+		NP237(300000),
+		SA326(24000000),
+		SA327(30000000),
+		EUPH(40000000),
+		LEAD(1),
+		PB209(4000000),
+		LITHIUM(1),
+		BI(1),
 		UNKNOWN(1);
 		
 		private ReactorFuelType(int i) {

@@ -175,18 +175,6 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		
 		inFlux += selfRate;
 		
-		double xenon = getPoison(stack) * xe135HalflifeMulPerTick;
-		xenon -= xenonBurnFunc(inFlux);
-		
-		inFlux *= (1D - getPoisonLevel(stack));
-
-		xenon += xenonGenFunc(inFlux);
-		
-		if(xenon < 0D) xenon = 0D;
-		if(xenon > 100D) xenon = 100D;
-		
-		setPoison(stack, xenon);
-		
 		double outFlux = reactivityFunc(inFlux, getEnrichment(stack)) * RBMKDials.getReactivityMod(world);
 		
 		double y = getYield(stack);
@@ -200,6 +188,28 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 		coreHeat += outFlux * heat;
 		setCoreHeat(stack, coreHeat);
 		
+		return outFlux;
+	}
+
+//AMode
+	public double burnnew(World world, ItemStack stack, double inFlux) {
+		
+		inFlux += selfRate;
+		
+		double outFlux = reactivityFunc(inFlux, getEnrichment(stack)) * RBMKDials.getReactivityMod(world) * 100.0D;
+		
+		double y = getYield(stack);
+		y -= inFlux;
+		
+		if(y < 0D) y = 0D;
+		
+		setYield(stack, y);
+		
+		double coreHeat = getCoreHeat(stack);
+		coreHeat += outFlux * heat;
+		
+		setCoreHeat(stack,coreHeat);
+
 		return outFlux;
 	}
 
@@ -424,8 +434,8 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 			list.add(TextFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmx.xenonBurn", TextFormatting.WHITE + "x² / " + xBurn));
 			list.add(TextFormatting.GOLD + I18nUtil.resolveKey("trait.rbmx.heat", heat + "°C"));
 			list.add(TextFormatting.GOLD + I18nUtil.resolveKey("trait.rbmx.diffusion", diffusion + "¹/²"));
-			list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.rbmx.skinTemp", ((int)(getHullHeat(stack) * 10D) / 10D) + "m"));
-			list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.rbmx.coreTemp", ((int)(getCoreHeat(stack) * 10D) / 10D) + "m"));
+			list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.rbmx.skinTemp", (long)getHullHeat(stack) + "m"));
+			list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.rbmx.coreTemp", (long)getCoreHeat(stack) + "m"));
 			list.add(TextFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmx.melt", meltingPoint + "m"));
 			list.add(TextFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmx.meltdown", ((int)(getMeltdownPercent(stack) * 1000D) / 1000D) + "%"));
 			
@@ -445,8 +455,8 @@ public class ItemRBMKRod extends Item implements IItemHazard {
 			list.add(TextFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.xenonBurn", TextFormatting.WHITE + "x² / " + xBurn));
 			list.add(TextFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.heat", heat + "°C"));
 			list.add(TextFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.diffusion", diffusion + "¹/²"));
-			list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.rbmk.skinTemp", ((int)(getHullHeat(stack) * 10D) / 10D) + "°C"));
-			list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.rbmk.coreTemp", ((int)(getCoreHeat(stack) * 10D) / 10D) + "°C"));
+			list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.rbmk.skinTemp", (long)getHullHeat(stack) + "°C"));
+			list.add(TextFormatting.RED + I18nUtil.resolveKey("trait.rbmk.coreTemp", (long)getCoreHeat(stack) + "°C"));
 			list.add(TextFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmk.melt", meltingPoint + "°C"));
 			list.add(TextFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmk.meltdown", ((int)(getMeltdownPercent(stack) * 1000D) / 1000D) + "%"));
 		}

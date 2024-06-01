@@ -120,6 +120,8 @@ public class RBMKOutgasserRecipes {
 		
 		addRecipe(120000 * ItemHazard.nugget, ModItems.nugget_australium, new ItemStack(ModItems.nugget_australium_lesser));
 		addRecipe(120000 * ItemHazard.billet, ModItems.billet_australium, new ItemStack(ModItems.billet_australium_lesser));
+		addRecipe(400000 * ItemHazard.nugget, ModItems.nugget_australium_lesser, new ItemStack(ModItems.nugget_australium_greater));
+		addRecipe(400000 * ItemHazard.billet, ModItems.billet_australium_lesser, new ItemStack(ModItems.billet_australium_greater));
 		
 		addRecipe(14000000 * ItemHazard.nugget, PB.nugget(), new ItemStack(ModItems.nugget_pb209));
 		addRecipe(14000000 * ItemHazard.powder_tiny, PB.dustTiny(), new ItemStack(ModItems.powder_pb209_tiny));
