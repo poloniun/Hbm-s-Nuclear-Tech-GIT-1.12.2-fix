@@ -1492,7 +1492,8 @@ public class ModItems {
 	
 	
 	public static final Item tritium_deuterium_cake = new ItemCustomLore("tritium_deuterium_cake").setCreativeTab(MainRegistry.controlTab).setMaxStackSize(1);
-	
+
+	public static final Item pile_rod_pu239 = new ItemPileRod(ItemHazard.billet * 3 * ItemHazard.pu239, "pile_rod_pu239").setCreativeTab(MainRegistry.controlTab);	
 	public static final Item pile_rod_uranium = new ItemPileRod(ItemHazard.billet * 3 * ItemHazard.u, "pile_rod_uranium").setCreativeTab(MainRegistry.controlTab);
 	public static final Item pile_rod_plutonium = new ItemPileRod(ItemHazard.billet * 3 * ItemHazard.pu, "pile_rod_plutonium").setCreativeTab(MainRegistry.controlTab);
 	public static final Item pile_rod_source = new ItemPileRod(3 * ItemHazard.rabe, "pile_rod_source").setCreativeTab(MainRegistry.controlTab);

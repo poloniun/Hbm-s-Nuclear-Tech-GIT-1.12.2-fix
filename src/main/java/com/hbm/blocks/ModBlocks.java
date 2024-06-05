@@ -1056,7 +1056,6 @@ public class ModBlocks {
 	public static final int guiID_machine_generator = 15;
 	
 	public static final Block machine_reactor_small = new MachineReactorSmall(Material.IRON, "machine_reactor_small").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
-	public static final Block initial_reactor = new MachineReactorSmall(Material.IRON, "initial_reactor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 
 	public static final int guiID_reactor_small = 65;
 
