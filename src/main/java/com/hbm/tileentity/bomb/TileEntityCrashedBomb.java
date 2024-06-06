@@ -32,7 +32,7 @@ public class TileEntityCrashedBomb extends TileEntity implements ITickable{
 		if(!world.isRemote) {
 			float ra = world.rand.nextFloat();			
 			if(ra< 0.12) {
-				ItemStack out = ra > 0.1 ? new ItemStack(ModItems.powder_balefire): 
+				ItemStack out = ra > 0.09 ? new ItemStack(ModItems.powder_balefire): 
 				ra> 0.06 ? new ItemStack(ModItems.particle_aschrab):new ItemStack(ModItems.particle_amat);
 
 						MutableBlockPos mPos = new BlockPos.MutableBlockPos();
