@@ -11,6 +11,7 @@ import static com.hbm.blocks.ModBlocks.*;
 import static com.hbm.inventory.OreDictManager.DictFrame.*;
 import static com.hbm.inventory.OreNames.*;
 
+import com.hbm.inventory.BedrockOreRegistry;
 
 import com.hbm.config.GeneralConfig;
 import com.hbm.hazard.HazardData;
@@ -349,7 +350,7 @@ public class OreDictManager {
 		STAR																												.ingot(ingot_starmetal)																.block(block_starmetal)							.crystal(crystal_starmetal)								.ore(ore_meteor_starmetal);
 		BIGMT																												.ingot(ingot_saturnite)																																				.plate(plate_saturnite);
 		FERRO																												.ingot(ingot_ferrouranium);
-		EUPH														.nugget(nugget_euphemium)								.ingot(ingot_euphemium)		.dust(powder_euphemium)									.block(block_euphemium);
+		EUPH														.nugget(nugget_euphemium)								.ingot(ingot_euphemium)		.dust(powder_euphemium)									.block(block_euphemium)		.ore(block_euphemium_cluster);
 		DNT															.nugget(nugget_dineutronium)							.ingot(ingot_dineutronium)	.dust(powder_dineutronium)								.block(block_dineutronium);
 		FIBER																												.ingot(ingot_fiberglass)															.block(block_fiberglass);
 		ASBESTOS	.asbestos(1F)																							.ingot(ingot_asbestos)		.dust(powder_asbestos)									.block(block_asbestos)							.crystal(crystal_asbestos)								.ore(ore_asbestos, ore_gneiss_asbestos, basalt_asbestos);
@@ -422,6 +423,7 @@ public class OreDictManager {
 		//HEMATITE																																																																										.ore(fromOne(stone_resource, EnumStoneType.HEMATITE));
 		//MALACHITE																																																																										.ore(fromOne(stone_resource, EnumStoneType.MALACHITE));
 		//SLAG																																																	.block(block_slag);
+
 
 		OreDictionary.registerOre(KEY_OIL_TAR, fromOne(oil_tar, EnumTarType.CRUDE));
 		// OreDictionary.registerOre(KEY_CRACK_TAR, fromOne(oil_tar, EnumTarType.CRACK));
@@ -502,7 +504,8 @@ public class OreDictManager {
 		OreDictionary.registerOre("blockGlassLime", glass_trinitite);
 		OreDictionary.registerOre("blockGlassRed", glass_polonium);
 		OreDictionary.registerOre("blockGlassBlack", glass_ash);
-		
+
+
 		//MaterialShapes.registerCompatShapes();
 	}
 	

@@ -390,7 +390,8 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
-
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 @Mod(modid = RefStrings.MODID, version = RefStrings.VERSION, name = RefStrings.NAME)
 public class MainRegistry {
 
@@ -528,6 +529,7 @@ public class MainRegistry {
 		
 		OreDictManager.registerGroups();
 		OreDictManager oreMan = new OreDictManager();
+
 
 		MinecraftForge.EVENT_BUS.register(oreMan); //OreRegisterEvent
 
@@ -1060,6 +1062,7 @@ public class MainRegistry {
 		registerReactorFuels();
 		ControlRegistry.init();
 		OreDictManager.registerOres();
+
 	}
 
 	@EventHandler
@@ -1105,7 +1108,9 @@ public class MainRegistry {
 		EngineRecipes.registerEngineRecipes();
 		FluidCombustionRecipes.registerFluidCombustionRecipes();
 		HbmDetox.init();
-
+		for(Integer index : BedrockOreRegistry.oreIndexes.keySet() ) {
+			OreDictionary.registerOre(BedrockOreRegistry.oreIndexes.get(index), new ItemStack(ModItems.ore_bedrock_exquisite, 1, index));
+		}		
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.lox_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.oxygen, 10000));
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.pink_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.kerosene, 10000));
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.red_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.diesel, 10000));
