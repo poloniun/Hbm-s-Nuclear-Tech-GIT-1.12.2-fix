@@ -14,7 +14,6 @@ import com.hbm.items.tool.ItemLock;
 import com.hbm.tileentity.DoorDecl;
 import com.hbm.tileentity.TileEntityDoorGeneric;
 
-import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.block.Block;
@@ -34,8 +33,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 
-@Optional.InterfaceList({@Optional.Interface(iface = "micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock", modid = "galacticraftcore")})
-public class BlockDoorGeneric extends BlockDummyable implements IRadResistantBlock, IPartialSealableBlock {
+public class BlockDoorGeneric extends BlockDummyable implements IRadResistantBlock{
 
 	public DoorDecl type;
 	private boolean isRadResistant;

@@ -2392,6 +2392,7 @@ public class ClientProxy extends ServerProxy {
 		ModItems.ore_bedrock_exquisite.setTileEntityItemStackRenderer(new ItemRendererBedrockOre(0x797D81, 0.9F));
 		ModItems.ore_bedrock_perfect.setTileEntityItemStackRenderer(new ItemRendererBedrockOre(0x6C6E70, 1F));
 		ModItems.ore_bedrock_enriched.setTileEntityItemStackRenderer(new ItemRendererBedrockOre(0x55595D, 1F));
+		ModItems.ore_bedrock_crystal.setTileEntityItemStackRenderer(new ItemRendererBedrockOre(0x34373D, 1F));
 		
 		for(Entry<Item, ItemRenderBase> entry : ItemRenderLibrary.renderers.entrySet()){
 			entry.getKey().setTileEntityItemStackRenderer(entry.getValue());

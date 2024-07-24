@@ -1725,6 +1725,7 @@ public class ModItems {
 	public static final Item ore_bedrock_exquisite = new ItemBedrockOre("ore_bedrock_exquisite").setCreativeTab(MainRegistry.partsTab); //Centri
 	public static final Item ore_bedrock_perfect = new ItemBedrockOre("ore_bedrock_perfect").setCreativeTab(MainRegistry.partsTab); //Acid High Solvent
 	public static final Item ore_bedrock_enriched = new ItemBedrockOre("ore_bedrock_enriched").setCreativeTab(MainRegistry.partsTab); //Final Product
+	public static final Item ore_bedrock_crystal = new ItemBedrockOre("ore_bedrock_crystal").setCreativeTab(MainRegistry.partsTab); //Extra Product
 
 	public static final Item neutron_reflector = new ItemBase("neutron_reflector").setCreativeTab(MainRegistry.partsTab);
 	public static final Item rtg_unit = new ItemBase("rtg_unit").setCreativeTab(MainRegistry.partsTab);

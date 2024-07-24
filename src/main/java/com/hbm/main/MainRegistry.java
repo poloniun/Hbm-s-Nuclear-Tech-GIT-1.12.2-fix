@@ -1109,7 +1109,8 @@ public class MainRegistry {
 		FluidCombustionRecipes.registerFluidCombustionRecipes();
 		HbmDetox.init();
 		for(Integer index : BedrockOreRegistry.oreIndexes.keySet() ) {
-			OreDictionary.registerOre(BedrockOreRegistry.oreIndexes.get(index), new ItemStack(ModItems.ore_bedrock_exquisite, 1, index));
+			OreDictionary.registerOre(BedrockOreRegistry.oreIndexes.get(index), new ItemStack(ModItems.ore_bedrock_enriched, 1, index));
+			OreDictionary.registerOre("crystal" + BedrockOreRegistry.oreIndexes.get(index).substring(3), new ItemStack(ModItems.ore_bedrock_crystal, 1, index));	
 		}		
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.lox_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.oxygen, 10000));
 		FluidContainerRegistry.registerContainer(Item.getItemFromBlock(ModBlocks.pink_barrel), ModItems.tank_steel, new FluidStack(ModForgeFluids.kerosene, 10000));

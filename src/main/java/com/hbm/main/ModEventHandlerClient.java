@@ -16,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.Project;
 
-import baubles.api.BaublesApi;
 
 import com.google.common.collect.Queues;
 import com.hbm.blocks.ILookOverlay;
@@ -301,6 +300,7 @@ public class ModEventHandlerClient {
 			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_enriched, i, new ModelResourceLocation(ModItems.ore_bedrock_enriched.getRegistryName(), "inventory"));
 			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_exquisite, i, new ModelResourceLocation(ModItems.ore_bedrock_exquisite.getRegistryName(), "inventory"));
 			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_perfect, i, new ModelResourceLocation(ModItems.ore_bedrock_perfect.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_crystal, i, new ModelResourceLocation(ModItems.ore_bedrock_crystal.getRegistryName(), "inventory"));
 		}	
 	}
 
@@ -584,6 +584,7 @@ public class ModEventHandlerClient {
 		swapModels(ModItems.ore_bedrock_enriched, reg);
 		swapModels(ModItems.ore_bedrock_exquisite, reg);
 		swapModels(ModItems.ore_bedrock_perfect, reg);
+		swapModels(ModItems.ore_bedrock_crystal, reg);
 		
 		for(Entry<Item, ItemRenderBase> entry : ItemRenderLibrary.renderers.entrySet()){
 			swapModels(entry.getKey(), reg);
@@ -1635,15 +1636,6 @@ public class ModEventHandlerClient {
 		}
 	}
 
-	public boolean hasBauble(EntityPlayer player, Item bauble){
-		try{
-			if(BaublesApi.isBaubleEquipped(player, bauble) != -1){
-				return true;
-			}
-		} catch(Throwable t){
-		}
-		return false;
-	}
 
 	@SubscribeEvent
 	public void onOverlayRender(RenderGameOverlayEvent.Pre event) {
@@ -1673,14 +1665,14 @@ public class ModEventHandlerClient {
 		/// HANDLE GEIGER COUNTER AND JETPACK HUD ///
 		if(event.getType() == ElementType.HOTBAR) {
 			if(!(ArmorFSB.hasFSBArmorHelmet(player) && ((ArmorFSB)player.inventory.armorInventory.get(3).getItem()).customGeiger)) {
-				if(Library.hasInventoryItem(player.inventory, ModItems.geiger_counter) || hasBauble(player, ModItems.geiger_counter)) {
+				if(Library.hasInventoryItem(player.inventory, ModItems.geiger_counter) ) {
 	
 					float rads = (float)Library.getEntRadCap(player).getRads();
 	
 					RenderScreenOverlay.renderRadCounter(event.getResolution(), rads, Minecraft.getMinecraft().ingameGUI);
 				}
 			}
-			if(Library.hasInventoryItem(player.inventory, ModItems.digamma_diagnostic) || hasBauble(player, ModItems.digamma_diagnostic)) {
+			if(Library.hasInventoryItem(player.inventory, ModItems.digamma_diagnostic )) {
 	
 				float digamma = (float)Library.getEntRadCap(player).getDigamma();
 
