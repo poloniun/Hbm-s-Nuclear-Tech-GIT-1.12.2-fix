@@ -3081,6 +3081,7 @@ item.ore_bedrock_perfect.name=完美的%s矿
 item.ore_bedrock_purified.name=净化%s矿
 item.ore_bedrock_seared.name=灼热的%s矿
 item.ore_bedrock_separated.name=分离的%s矿
+item.ore_bedrock_crystal.name=晶化%s矿
 item.overfuse.name=奇异螺丝刀
 item.oxy_mask.name=氧气面罩
 item.paa_boots.name=PaA "好鞋"
