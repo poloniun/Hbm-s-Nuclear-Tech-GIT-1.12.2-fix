@@ -211,25 +211,40 @@ public class EntityRADBeast extends EntityMob implements IRadiationImmune {
     protected void dropLoot(boolean wasRecentlyHit, int looting, DamageSource source) {
         super.dropLoot(wasRecentlyHit, looting, source);
         if(looting > 0) {
-                this.dropItem(ModItems.nugget_polonium, looting);
+	float ra = this.rand.nextFloat();	
+	int num =  (int)(Math.sqrt(1.0D + looting) +1);
+	if(ra <0.25 ) {
+		this.dropItem(ModItems.nugget_uranium, num);
+	} else if (ra < 0.5) {
+		this.dropItem(ModItems.nugget_th232, num);
+	} else if (ra < 0.75) {
+		this.dropItem(ModItems.nugget_plutonium, num);
+	} else if (ra < 0.85) {
+		this.dropItem(ModItems.nugget_ra226, num);
+	} else if (ra < 0.95) {
+		this.dropItem(ModItems.nugget_polonium, num);
+	} else if (ra < 0.99) {
+		this.dropItem(ModItems.nugget_technetium, num);
+	} else {
+		this.dropItem(ModItems.nugget_bismuth, num);
+	}
             }
             
-        int count = this.rand.nextInt(3) + 1;
+
+	int count = (int)(Math.log(2.5D + looting) + 1);
         
         for(int i = 0; i < count; i++) {
             
-            int r = this.rand.nextInt(3);
-            
-            if(r == 0) {
-                this.dropItem(this.isWet() ? ModItems.waste_uranium : ModItems.rod_uranium_fuel_depleted, 1);
-                
-            } else if(r == 1) {
-                this.dropItem(this.isWet() ? ModItems.waste_mox : ModItems.rod_mox_fuel_depleted, 1);
-                
-            } else if(r == 2) {
-                this.dropItem(this.isWet() ? ModItems.waste_plutonium : ModItems.rod_plutonium_fuel_depleted, 1);
-                
-            }
+           	int r = this.rand.nextInt(20);
+	if(r < 9) {
+		this.dropItem(ModItems.waste_pu239, 1);
+	} else if(r < 18) {
+		this.dropItem(ModItems.waste_np237, 1);
+	} else if(r < 19) {
+		this.dropItem(ModItems.waste_sa327, 1);
+	} else {
+		this.dropItem(ModItems.waste_pb209, 1);				
+	}
         }
     }
 }
