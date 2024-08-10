@@ -32,7 +32,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraft.util.EntityDamageSource;
 //Drillgon200: This whole thing is messed up and janky and I don't know what to about it.
 public class EntityHunterChopper extends EntityFlying implements IMob, IRadiationImmune {
 
@@ -61,7 +61,7 @@ public class EntityHunterChopper extends EntityFlying implements IMob, IRadiatio
 	
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (this.isEntityInvulnerable(source) || !(source == ModDamageSource.nuclearBlast || source == ModDamageSource.blackhole || source.isExplosion()  || ModDamageSource.getIsTau(source) || ModDamageSource.getIsSubatomic(source) || ModDamageSource.getIsDischarge(source))) {
+		if (this.isEntityInvulnerable(source) || !(source == ModDamageSource.nuclearBlast || source instanceof EntityDamageSource  || source == ModDamageSource.blackhole || source.isExplosion()  || ModDamageSource.getIsTau(source) || ModDamageSource.getIsSubatomic(source) || amount > 1000.0F || ModDamageSource.getIsDischarge(source))) {
 			return false;
 		} else if(amount >= this.getHealth()) {
 			this.initDeath();
